@@ -1,0 +1,31 @@
+package by.yarom.library.DAO;
+
+import by.yarom.library.Entity.CatalogBooks;
+
+import java.util.List;
+
+public interface CatalogBooksDao {
+
+     void addBook(CatalogBooks catalogBooks);
+
+     void updateBook(CatalogBooks catalogBooks);
+
+     void deleteBook(int id);
+
+     CatalogBooks getCatalogBooksById(int id);
+
+     List<CatalogBooks> listCatalogBooks(Integer page);
+
+     Long countFindBook();
+
+     List<CatalogBooks> listBooksByChar(String s, Integer page);
+
+     Long countFindBookByChar(String s);
+
+     List<CatalogBooks> listBooksByParam(String name, String param, Integer page);
+
+     Long countFindBookByParam(String name, String param);
+
+     CatalogBooks getCatalogBookByInvNum(int invNum);
+
+}
