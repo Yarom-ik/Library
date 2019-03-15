@@ -13,7 +13,7 @@
         <#list categoryes as category>
         <tr>
             <td>
-                <button class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-target="#modalEdit" data-category="${category.categoryName}" data-id="${category.id_Category} data-placement="top" title="Изменить категорию"><img src="/resources/image/edit.png"></button>
+                <button class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-target="#modalEdit" data-category="${category.categoryName}" data-id="${category.id_Category}" data-placement="top" title="Изменить категорию"><img src="/resources/image/edit.png"></button>
                 <#--<a class="btn btn-outline-info btn-sm btn-table " role="button"  href="/addToOrder/${book.id}"data-toggle="tooltip" data-placement="top" title="Добавить к выдаче"><img src="/resources/image/ryka.png"></a>-->
                 <#--<button type="button" class="btn btn-primary editButton" data-toggle="modal" data-target="#modalEdit" data-category="${category.categoryName}" data-id="${category.id_Category}" >Edit</button>-->
             </td>
@@ -47,8 +47,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Название:</span>
                     </div>
-                    <input type="hidden" name="id_Category" class="form-control" aria-describedby="basic-addon1">
-                    <input type="text" name="categoryName" class="form-control" aria-describedby="basic-addon1">
+                    <input type="hidden" name="id_Category" class="form-control" aria-describedby="basic-addon1" >
+                    <input type="text" name="categoryName" class="form-control" aria-describedby="basic-addon1" required>
                 </div>
             </div>
             <div class="modal-footer">
@@ -87,7 +87,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Название:</span>
                     </div>
-                    <input type="text" name="categoryName"  placeholder="Введите название категории" class="form-control" aria-describedby="basic-addon1">
+                    <input type="text" name="categoryName"  placeholder="Введите название категории" class="form-control" aria-describedby="basic-addon1" required>
                 </div>
             </div>
             <div class="modal-footer">

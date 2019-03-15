@@ -21,10 +21,9 @@
                         <th></th>
                         <th >Название</th>
                         <th >Автор</th>
-                        <th >Год издания</th>
                         <th>Инвентарный номер</th>
                         <th scope="col">Количество</th>
-                        <th scope="col">Выдать кол-во</th>
+                        <th scope="col">Выдать</th>
                     </tr>
         </thead>
         <tbody>
@@ -36,7 +35,6 @@
                 </td>
                 <td > ${key.name}</a></td>
                 <td>${key.author.authorName}</td>
-                <td>#{key.year}</td>
                 <td>#{key.invNum}</td>
                 <td>${key.countBook}</td>
                 <td class="text-center"><a href="/orderMin/${key.id}" class="btn btn-outline-danger btn-sm btn-circle" role="button"><img src="/resources/image/minus.png"></a>

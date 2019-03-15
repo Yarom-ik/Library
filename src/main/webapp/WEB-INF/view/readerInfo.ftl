@@ -32,6 +32,8 @@
 
 <#--<a href="/addToReader/${readerId.idReader}" class="btn btn-primary" id="order">Выбрать</a>-->
 
+<#if orders?has_content>
+
 <h5>История выдач:</h5>
 
 
@@ -41,12 +43,12 @@
             <div class="layer">
                 <div class="col-3">
                     <div class="btn-group-vertical">
-                        <#list orders as order>
-                            <#if order.finished == false>
-                                <button type="submit" class="btn btn-secondary" name="action" value="${order.idOrder}">${order.data?string["dd.MM.yyyy HH:mm"]}</button>
-                            <#else ><button type="submit" class="btn btn-success" name="action" value="${order.idOrder}">${order.data?string["dd.MM.yyyy HH:mm"]}</button>
-                            </#if>
-                        </#list>
+                            <#list orders as order>
+                                <#if order.finished == false>
+                                    <button type="submit" class="btn btn-secondary" name="action" value="${order.idOrder}">${order.data?string["dd.MM.yyyy HH:mm"]}</button>
+                                <#else ><button type="submit" class="btn btn-success" name="action" value="${order.idOrder}">${order.data?string["dd.MM.yyyy HH:mm"]}</button>
+                                </#if>
+                            </#list>
                     </div>
                 </div>
             </div>
@@ -84,11 +86,16 @@
                         </tbody>
                     </table>
                     <td><a href="/readerInfo/${readerId.idReader}?action=${idOrd}&returnBookAll=yes&returnBook=true" class="btn btn-primary btn-sm" id="order">Возвращены все</a></td>
-                <#else ><p> Выберите дату</p>
+                <#else>
+                    <p> Выберите дату выдачи книг</p>
                 </#if>
             </div>
         </div>
     </div>
 </form>
-
+<#else >
+<div class="alert alert-primary" role="alert">
+    Нет выданных книг!
+</div>
+</#if>
 </#macro>

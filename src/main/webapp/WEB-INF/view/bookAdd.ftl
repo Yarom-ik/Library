@@ -88,9 +88,9 @@
 
             <div class="input-group ">
                     <div class="input-group-prepend">
-                     <div class="">
-                        <button type="submit" class="btn btn-primary" role="button" id="btn1" name="btn1" >Добавить</button>
-                     </div>
+                        <div class="">
+                            <button type="submit" class="btn btn-primary" role="button" id="btn1" name="btn1" >Добавить</button>
+                        </div>
                         <#if addOk??>
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 Книга успешно добавлена
@@ -104,14 +104,13 @@
                         </#if>
                     </div>
             </div>
-            </div>
         </div>
     </div>
 </form>
 
-<script src="/resources/js/jquery-3.2.1.slim.min.js"></script>
-<script src="/resources/js/popper.min.js"></script>
-<script src="/resources/js/bootstrap.min.js"></script>
+<#--<script src="/resources/js/jquery-3.2.1.slim.min.js"></script>-->
+<#--<script src="/resources/js/popper.min.js"></script>-->
+<#--<script src="/resources/js/bootstrap.min.js"></script>-->
 <script src="/resources/js/bootstrap3-typeahead.js"></script>
 <script>
     var $input = $(".typeahead");

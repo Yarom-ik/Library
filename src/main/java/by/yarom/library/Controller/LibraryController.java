@@ -51,7 +51,7 @@ public class LibraryController {
     @Qualifier("bookValidator")
     private BookValidator bookValidator;
 
-    @RequestMapping("/categoryes/edit")
+    @RequestMapping(value = "/categoryes/edit", method = RequestMethod.GET)
     public String categoryEdit(@ModelAttribute Category category){
         categoryService.editCategory(category);
         return "redirect:/categoryes";
@@ -73,7 +73,7 @@ public class LibraryController {
     @RequestMapping("/categoryes")
     public String categoryes(@ModelAttribute Category category,
                              Model model){
-
+        listBasket(model);
         model.addAttribute("categoryes", categoryService.categoryList());
         return "/categoryes";
     }
@@ -180,6 +180,7 @@ public class LibraryController {
             catalogBooksService.addCatalogBook(catalogBooks);
             model.addAttribute("addOk", true);
         }
+        listBasket(model);
         model.addAttribute("category", categoryService.categoryList());
         model.addAttribute("authors", authorService.listAuthors());
 
@@ -188,6 +189,7 @@ public class LibraryController {
 
     @RequestMapping("bookAdd")
     public String bookAdd(Model model){
+        listBasket(model);
         model.addAttribute("authors", authorService.listAuthors());
         model.addAttribute("category", categoryService.categoryList());
         return "/bookAdd";
@@ -227,7 +229,6 @@ public class LibraryController {
 
     @RequestMapping("/clearBasketId/{id}")
     public String clearBasketById(@ModelAttribute("id") int id){
-        System.out.println("CLEAR BASKET "+ id);
         basketBook.delBasketBook(id,1);
         return "redirect:/orders";
     }

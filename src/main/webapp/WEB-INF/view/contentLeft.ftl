@@ -2,6 +2,7 @@
 <head>
     <body>
 <br>
+
 <ul class="list-group">
     <li class="list-group-item list-group-item-secondary">Читатель:</li>
 
@@ -30,9 +31,7 @@
 
     <a href="/orders" class="btn btn-primary">Выдача книг</a>
 </ul>
-
-
-
+<br>
 
     </body>
 </head>

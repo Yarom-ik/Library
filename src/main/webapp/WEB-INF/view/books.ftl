@@ -45,12 +45,12 @@
 <form method="get" action="/books">
 <div class="container-fluid">
     <div class="row">
-        <div class="input-group input-group-sm col-md-8">
+        <div class="input-group input-group col-md-8">
             <input type="text" name="find" value="<#if findNameInput??>${findNameInput}</#if>" class="form-control col-md-7" placeholder="Поиск по книгам" aria-label="Recipient's username" aria-describedby="button-addon2" required>
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01">Поиск по:</label>
                 </div>
-                 <select class="custom-select custom-select-sm col-md-3" name="param" id="inputGroupSelect01">
+                 <select class="custom-select  col-md-3" name="param" id="inputGroupSelect01">
                      <option <#if paramInput?? && paramInput=='name'> ${(paramInput??)?string('selected', '')}</#if> value="name">названию книги</option>
                      <option <#if paramInput?? && paramInput=='author'> ${(paramInput??)?string('selected', '')}</#if> value="author">автору</option>
                      <option <#if paramInput?? && paramInput=='category'> ${(paramInput??)?string('selected', '')}</#if> value="category">категории</option>
@@ -61,7 +61,7 @@
                 </div>
         </div>
         <div class="col-md-3">
-            <a role="button" href="/books.ftl" class="btn btn-primary btn-sm">Сбросить параметры поиска</a>
+            <a role="button" href="/books.ftl" class="btn btn-primary">Сбросить параметры поиска</a>
         </div>
     </div>
 </div>
@@ -140,9 +140,13 @@
                             <li class="page-item"><a class="page-link" href="/books?page=${p}">${p}</a></li>
                         </#if>
                     </#list>
-                    <li class="page-item">
+
                         <#if countFindBooks gt 1 && countFindBooks != activePage>
+                        <li class="page-item">
                             <a class="page-link" href="/books?page=${activePage+1}">Следующая</a>
+                            <#else >
+                            <li class="page-item disabled">
+                                <a class="page-link " href="/books?page=${activePage+1}">Следующая</a>
                         </#if>
                     </li>
                 </ul>
