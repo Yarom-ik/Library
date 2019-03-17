@@ -45,6 +45,9 @@ public class CatalogBooks {
     @Column (name = "count_book")
     private int countBook;
 
+    @Column (name = "active")
+    private boolean active;
+
     public CatalogBooks(){
     }
 
@@ -112,6 +115,14 @@ public class CatalogBooks {
         this.countBook = countBook;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
         return "CatalogBooks{" +
@@ -123,6 +134,7 @@ public class CatalogBooks {
                 ", year=" + year +
                 ", invNum=" + invNum +
                 ", countBook=" + countBook +
+                ", active=" + active +
                 '}';
     }
 }

@@ -4,9 +4,12 @@ import by.yarom.library.Entity.*;
 import by.yarom.library.Service.*;
 import by.yarom.library.backetBook.BasketBook;
 import by.yarom.library.validator.BookValidator;
+import by.yarom.library.validator.ReaderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +53,35 @@ public class LibraryController {
     @Autowired
     @Qualifier("bookValidator")
     private BookValidator bookValidator;
+
+    @Autowired
+    @Qualifier("readerValidator")
+    private ReaderValidator readerValidator;
+
+    @RequestMapping(value = "/readerAdd", method = RequestMethod.POST)
+    public String readerAddNew(@ModelAttribute @Valid Reader reader,
+                                BindingResult bindingResult,
+                                Model model){
+        readerValidator.validate(reader,bindingResult);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            errorsMap.putAll(ControllerUtils.getErrors(bindingResult));
+            model.mergeAttributes(errorsMap);
+        }else {
+            reader.setActive(true);
+            readerService.addReader(reader);
+            model.addAttribute("addOk", true);
+        }
+        model.addAttribute("readerNew", reader);
+        listBasket(model);
+        return "/readerAdd";
+    }
+
+    @RequestMapping(value = "/readerAdd")
+    public String readerAdd(Model model){
+        listBasket(model);
+        return "/readerAdd";
+    }
 
     @RequestMapping(value = "/categoryes/edit", method = RequestMethod.GET)
     public String categoryEdit(@ModelAttribute Category category){
@@ -152,14 +184,12 @@ public class LibraryController {
 
     @RequestMapping(value = "/bookAdd", method = RequestMethod.POST)
     public String bookNew(@ModelAttribute @Valid CatalogBooks catalogBooks,
-
                           BindingResult bindingResult,
                           @ModelAttribute @Valid Author author,
                           BindingResult bindingResultAuthor,
                           @ModelAttribute Category category,
                           Model model){
         bookValidator.validate(catalogBooks, bindingResult);
-        System.out.println("ERROR ---"+ bindingResult);
         if (bindingResult.hasErrors() || bindingResultAuthor.hasErrors()){
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             errorsMap.putAll(ControllerUtils.getErrors(bindingResultAuthor));
@@ -170,6 +200,7 @@ public class LibraryController {
         }else {
             Category category1 = categoryService.getCategory(category.getId_Category());
             catalogBooks.setCategory(category1);
+            catalogBooks.setActive(true);
             Author authorNew = authorService.getAuthorByName(author.getAuthorName());
             if (authorNew != null){
                catalogBooks.setAuthor(authorNew);
@@ -195,35 +226,57 @@ public class LibraryController {
         return "/bookAdd";
     }
 
-    @PostMapping("/editBook")
-    public String editBook(@RequestParam (value = "id") int id,
-                            @RequestParam (value = "name") String name,
-                           @RequestParam (value = "author") String author,
-                           @RequestParam (value = "categoryName", required = false) String category,
-                          @RequestParam (value = "year",required = false) int year,
-                          @RequestParam (value = "invNum",required = false) int invNum,
-                          @RequestParam (value = "countBook",required = false) int count)
-            {
-        Category category1 = categoryService.getCategoryByName(category);
-        CatalogBooks catalogBooks = catalogBooksService.getBookById(id);
-        catalogBooks.setName(name);
-        catalogBooks.setAuthor(authorService.getAuthorByName(author));
-        catalogBooks.setCategory(category1);
-        catalogBooks.setYear(year);
-        catalogBooks.setInvNum(invNum);
-        catalogBooks.setCountBook(count);
+    @RequestMapping("/deleteBook/{id}")
+    public String deleteBook(@PathVariable (value = "id") int idBook){
+        CatalogBooks catalogBooks = catalogBooksService.getBookById(idBook);
+        catalogBooks.setActive(false);
         catalogBooksService.updateBook(catalogBooks);
-        return "redirect:/bookInfo/"+ catalogBooks.getId();
+        return "redirect:/books";
+    }
+
+    @PostMapping("/bookInfo/{id}")
+    public String editBook(@ModelAttribute @Valid CatalogBooks catalogBooks,
+                           BindingResult bindingResult,
+                           @ModelAttribute @Valid Author author,
+                           BindingResult bindingResultAuthor,
+                           @ModelAttribute Category category,
+                           Model model){
+
+        if (bindingResult.hasErrors() || bindingResultAuthor.hasErrors()){
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            errorsMap.putAll(ControllerUtils.getErrors(bindingResultAuthor));
+            model.mergeAttributes(errorsMap);
+            catalogBooks.setAuthor(author);
+            catalogBooks.setCategory(category);
+            model.addAttribute("book", catalogBooks);
+            model.addAttribute("category", categoryService.categoryList());
+        }else {
+            catalogBooks.setActive(true);
+            Author authorNew = authorService.getAuthorByName(author.getAuthorName());
+            if (authorNew != null){
+                catalogBooks.setAuthor(authorNew);
+            }else {
+                authorService.addAuthor(author);
+                catalogBooks.setAuthor(author);
+            }
+            catalogBooks.setCategory(categoryService.getCategoryByName(category.getCategoryName()));
+            model.addAttribute("book", catalogBooks);
+            catalogBooksService.updateBook(catalogBooks);
+            model.addAttribute("category", categoryService.categoryList());
+
+            model.addAttribute("editOK", true);
+        }
+        listBasket(model);
+        model.addAttribute("authors", authorService.listAuthors());
+        return "/bookInfo";
     }
 
     @GetMapping("/bookInfo/{id}")
     public String cancelUpdateUser(@PathVariable("id") int id, Model model) {
        listBasket(model);
-
-//        model.addAttribute("book", new CatalogBooks());
         model.addAttribute("book", catalogBooksService.getBookById(id));
         model.addAttribute("category",categoryService.categoryList());
-
+        model.addAttribute("authors", authorService.listAuthors());
         return "/bookInfo";
     }
 
@@ -251,7 +304,6 @@ public class LibraryController {
                 int col = entry.getValue();
                 col++;
                 entry.setValue(col);
-
             }
         }
         return "redirect:/orders";
@@ -280,25 +332,20 @@ public class LibraryController {
         if (actionMin != null){
             System.out.println(actionMin);
         }
-
         listBasket(model);
         return "/orders";
     }
 
     public Model listBasket(Model model){
        Map<CatalogBooks, Integer> listBasket = new LinkedHashMap<>();
-
-
         Iterator<Map.Entry<Integer,Integer>> iter = basketBook.getBooksBasket().entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<Integer,Integer> entry = iter.next();
             listBasket.put( catalogBooksService.getBookById(entry.getKey()),entry.getValue());
         }
-
         model.addAttribute("basket", listBasket);
         model.addAttribute("count",listBasket.size());
         model.addAttribute("reader", readerService.getReaderById(basketBook.getReaderId()));
-
         return model;
     }
 
@@ -314,7 +361,6 @@ public class LibraryController {
         order.setReader(reader);
         orderService.addOrder(order);
         CatalogBooks catalogBooks = new CatalogBooks();
-
         Iterator<Map.Entry<Integer,Integer>> iter = basketBook.getBooksBasket().entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<Integer, Integer> entry = iter.next();
@@ -407,6 +453,7 @@ public class LibraryController {
             for(int itr=0;itr<count;itr+=10){
                 pageCount++;
             }
+            model.addAttribute("action", action);
             model.addAttribute("countFindBooks", pageCount);
 
         }

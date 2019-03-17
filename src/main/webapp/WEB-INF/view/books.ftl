@@ -61,7 +61,7 @@
                 </div>
         </div>
         <div class="col-md-3">
-            <a role="button" href="/books.ftl" class="btn btn-primary">Сбросить параметры поиска</a>
+            <a role="button" href="/books" class="btn btn-primary">Сбросить параметры поиска</a>
         </div>
     </div>
 </div>
@@ -133,17 +133,17 @@
                     </li>
                     <#list body as p>
                         <#if p == activePage>
-                            <li class="page-item active"><a class="page-link" href="/books?page=${p}">${p}</a></li>
+                            <li class="page-item active"><a class="page-link" href="/books?page=${p}<#if findNameInput??>${(findNameInput??)?string('&find=${findNameInput}', '')}${(paramInput??)?string('&param=${paramInput}', '')}<#elseif action??>${(action??)?string('&action=${action}', '')}</#if>">${p}</a></li>
                         <#elseif p == -1>
                             <li class="page-item disabled"><a class="page-link">...</a></li>
                         <#else>
-                            <li class="page-item"><a class="page-link" href="/books?page=${p}">${p}</a></li>
+                            <li class="page-item"><a class="page-link" href="/books?page=${p}<#if findNameInput??>${(findNameInput??)?string('&find=${findNameInput}', '')}${(paramInput??)?string('&param=${paramInput}', '')}<#elseif action??>${(action??)?string('&action=${action}', '')}</#if>">${p}</a></li>
                         </#if>
                     </#list>
 
                         <#if countFindBooks gt 1 && countFindBooks != activePage>
                         <li class="page-item">
-                            <a class="page-link" href="/books?page=${activePage+1}">Следующая</a>
+                            <a class="page-link" href="/books?page=${activePage+1}<#if findNameInput??>${(findNameInput??)?string('&find=${findNameInput}', '')}${(paramInput??)?string('&param=${paramInput}', '')}<#elseif action??>${(action??)?string('&action=${action}', '')}</#if>">Следующая</a>
                             <#else >
                             <li class="page-item disabled">
                                 <a class="page-link " href="/books?page=${activePage+1}">Следующая</a>

@@ -44,7 +44,7 @@ public class ReaderDaoImpl implements ReaderDao {
     public List<Reader> listReader(Integer page) {
         Integer maxResult = 10;
         page = (page - 1) * 10;
-        List<Reader> readerList = currentSession().createQuery("from Reader ")
+        List<Reader> readerList = currentSession().createQuery("from Reader r where r.active = true ")
                 .setFirstResult(page!=null?page:0)
                 .setMaxResults(maxResult!=null?maxResult:10)
                 .list();
@@ -53,14 +53,14 @@ public class ReaderDaoImpl implements ReaderDao {
 
     @Override
     public Long countFindReader() {
-        return (Long) currentSession().createCriteria(Reader.class).setProjection(Projections.rowCount()).uniqueResult();
+        return (Long) currentSession().createQuery("select count (*) from Reader r where r.active = true ").uniqueResult();
     }
 
     @Override
     public List<Reader> listReaderByChar(String actionChar, Integer page) {
         Integer maxResult = 10;
         page = (page - 1) * 10;
-        Query query =  currentSession().createQuery("from Reader c where c.firstName like :s");
+        Query query =  currentSession().createQuery("from Reader c where c.firstName like :s and c.active = true ");
         List<Reader> listReaderByChar = query
                 .setParameter("s",actionChar +"%")
                 .setFirstResult(page!=null?page:0)
@@ -71,9 +71,8 @@ public class ReaderDaoImpl implements ReaderDao {
 
     @Override
     public Long countFindReaderByChar(String actionChar) {
-        Query query = currentSession().createQuery("from Reader c where c.firstName like :s");
-        List<Reader> countFindReaderByChar = query.setParameter("s",actionChar +"%").list();
-        return Long.valueOf(countFindReaderByChar.size());
+        Query query = currentSession().createQuery("select count (*) from Reader c where c.firstName like :s and c.active = true");
+        return (Long) query.setParameter("s",actionChar +"%").uniqueResult();
     }
 
     @Override
@@ -88,18 +87,18 @@ public class ReaderDaoImpl implements ReaderDao {
         Query query = null;
         switch (list.size()){
             case 1: {
-                query = currentSession().createQuery("from Reader c where c.firstName = :name");
+                query = currentSession().createQuery("from Reader c where c.firstName = :name and c.active = true");
                 query.setParameter("name",list.get(0));
                 break;
             }
             case 2: {
-                query = currentSession().createQuery("from Reader c where c.firstName = :name and c.lastName =:lastName");
+                query = currentSession().createQuery("from Reader c where c.firstName = :name and c.lastName =:lastName and c.active = true ");
                 query.setParameter("name",list.get(0))
                         .setParameter("lastName", list.get(1));
                 break;
             }
             case 3: {
-                query = currentSession().createQuery("from Reader c where c.firstName = :name and c.lastName =:lastName and c.middleName =:middleName");
+                query = currentSession().createQuery("from Reader c where c.firstName = :name and c.lastName =:lastName and c.middleName =:middleName and c.active = true ");
                 query.setParameter("name",list.get(0))
                         .setParameter("lastName", list.get(1))
                         .setParameter("middleName", list.get(2));
@@ -125,18 +124,18 @@ public class ReaderDaoImpl implements ReaderDao {
         Query query = null;
         switch (list.size()){
             case 1: {
-                query = currentSession().createQuery("from Reader c where c.firstName = :name");
+                query = currentSession().createQuery("select count (*) from Reader c where c.firstName = :name and c.active = true");
                 query.setParameter("name",list.get(0));
                 break;
             }
             case 2: {
-                query = currentSession().createQuery("from Reader c where c.firstName = :name and c.lastName =:lastName");
+                query = currentSession().createQuery("select count (*) from Reader c where c.firstName = :name and c.lastName =:lastName and c.active = true");
                 query.setParameter("name",list.get(0))
                         .setParameter("lastName", list.get(1));
                 break;
             }
             case 3: {
-                query = currentSession().createQuery("from Reader c where c.firstName = :name and c.lastName =:lastName and c.middleName =:middleName");
+                query = currentSession().createQuery("select count (*) from Reader c where c.firstName = :name and c.lastName =:lastName and c.middleName =:middleName and c.active = true");
                 query.setParameter("name",list.get(0))
                         .setParameter("lastName", list.get(1))
                         .setParameter("middleName", list.get(2));
@@ -144,27 +143,42 @@ public class ReaderDaoImpl implements ReaderDao {
             }
         }
 
-
-        List<Reader> countFindReaderByName = query.list();
-        return Long.valueOf(countFindReaderByName.size());
+        return (Long) query.uniqueResult();
     }
 
     @Override
     public Reader getReaderById(int id) {
-
-        return (Reader) currentSession().get(Reader.class, id);
+            Reader reader = (Reader) currentSession().createQuery("from Reader r where r.id =:id and r.active = true ")
+                    .setParameter("id", id)
+                    .uniqueResult();
+        return reader;
     }
 
     @Override
     public Reader getReaderByFirsName(String firsName) {
 
-        CriteriaBuilder builder = currentSession().getCriteriaBuilder();
-        CriteriaQuery<Reader> criteria = builder.createQuery(Reader.class);
-        Root<Reader> readerRoot = criteria.from(Reader.class);
-        criteria.select(readerRoot);
-        criteria.where(builder.equal(readerRoot.get("firsName"), firsName));
-        Reader reader = currentSession().createQuery(criteria).uniqueResult();
+        Reader reader = (Reader) currentSession().createQuery("from Reader r where r.firstName =:firstName and r.active = true ")
+                .setParameter("firstName", firsName)
+                .setMaxResults(1)
+                .uniqueResult();
+        return reader;
+    }
 
+    @Override
+    public Reader getReaderByLastName(String lastName) {
+        Reader reader = (Reader) currentSession().createQuery("from Reader r where r.lastName =:lastName and r.active = true ")
+                .setParameter("lastName", lastName)
+                .setMaxResults(1)
+                .uniqueResult();
+        return reader;
+    }
+
+    @Override
+    public Reader getReaderByMiddleName(String middleName) {
+        Reader reader = (Reader) currentSession().createQuery("from Reader r where r.middleName =:middleName and r.active = true ")
+                .setParameter("middleName", middleName)
+                .setMaxResults(1)
+                .uniqueResult();
         return reader;
     }
 }

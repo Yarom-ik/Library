@@ -1,7 +1,9 @@
 package by.yarom.library.Entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -13,20 +15,26 @@ public class Reader {
     @Column(name = "id_reader")
     private int idReader;
 
+    @Size(min = 1, max = 45, message = "Слишком длинная фамилия")
     @NotBlank(message = "Поле фамилия не может быть пустым")
     @Column(name = "first_name")
     private String firstName;
 
+    @Size(min = 1, max = 45, message = "Слишком длинное имя")
     @NotBlank(message = "Поле имя не может быть пустым")
     @Column(name = "last_name")
     private String lastName;
 
+    @Size(min = 1, max = 45, message = "Слишком длинное отчество")
     @NotBlank(message = "Поле отчество не может быть пустым")
     @Column(name = "middle_name")
     private String middleName;
 
     @Column(name = "telephone")
     private String telephone;
+
+    @Column(name = "active")
+    private boolean active;
 
     @OneToMany (fetch = FetchType.LAZY, mappedBy = "reader")
     private Set<Order> orders;
@@ -74,12 +82,20 @@ public class Reader {
         this.telephone = telephone;
     }
 
-    public Set<Order> getOrder() {
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Set<Order> getOrders() {
         return orders;
     }
 
-    public void setOrder(Set<Order> order) {
-        this.orders = order;
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
@@ -90,7 +106,8 @@ public class Reader {
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", telephone='" + telephone + '\'' +
-                ", order=" + orders +
+                ", active=" + active +
+                ", orders=" + orders +
                 '}';
     }
 }

@@ -31,6 +31,9 @@ public class Users {
     @Column(name = "telephone")
     private String telephone;
 
+    public boolean isAdmin(){
+        return role.getName().contains("admin");
+    }
 
     public Users() {
     }

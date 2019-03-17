@@ -26,6 +26,11 @@ public class AuthController {
     @Qualifier(value = "userValidator")
     private UserValidator userValidator;
 
+    @GetMapping("/")
+    public String redirectPage(){
+        return "redirect:/books";
+    }
+
     @GetMapping("/sign_up")
     public String getSignUp(Model model) {
         model.addAttribute("user", new Users());

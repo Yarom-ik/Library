@@ -1,3 +1,4 @@
+<#include "security.ftl">
 <#macro main title>
 <html>
 <head>
@@ -96,19 +97,25 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item btn" href="/bookAdd">Добавить книгу</a>
                     <a class="dropdown-item btn" role="button" href="/categoryes" >Категори</a>
-                    <a class="dropdown-item btn" role="button"  href="#">Добавить читателя</a>
+                    <a class="dropdown-item btn" role="button"  href="/readerAdd">Добавить читателя</a>
                 </div>
             </li>
             <li class="nav-item ">
                 <a class="nav-link" href="#">Статистика </a>
             </li>
 
+            <#if isAdmin>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Панель администратора</a>
+                </li>
+            </#if>
+
         </ul>
 
-
+        <#--отображаем зарегистрированного пользователя-->
         <div class="nav-item dropdown">
             <a class="nav-item nav-link dropdown-toggle mr-md-2" style="color: #a4a4a4" href="#"  data-toggle="dropdown"> <img src="/resources/image/profle.png">
-            Библиотекарь</a>
+                ${nameUserLogin}</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
                 <a class="dropdown-item " href="#"> Изменить пароль</a>
 

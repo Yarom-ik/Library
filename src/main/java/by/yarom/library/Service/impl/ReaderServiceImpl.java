@@ -73,4 +73,14 @@ public class ReaderServiceImpl implements ReaderService{
     public Reader getReaderByFirsName(String firsName) {
         return readerDao.getReaderByFirsName(firsName);
     }
+
+    @Override
+    public Reader getReaderByLastName(String lastName) {
+        return readerDao.getReaderByLastName(lastName);
+    }
+
+    @Override
+    public Reader getReaderByMiddleName(String middleName) {
+        return readerDao.getReaderByMiddleName(middleName);
+    }
 }

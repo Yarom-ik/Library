@@ -28,4 +28,8 @@ public interface ReaderService {
     Reader getReaderById(int id);
 
     Reader getReaderByFirsName(String firsName);
+
+    Reader getReaderByLastName(String lastName);
+
+    Reader getReaderByMiddleName(String middleName);
 }

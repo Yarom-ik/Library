@@ -4,12 +4,10 @@ package by.yarom.library.validator;
 import by.yarom.library.Entity.CatalogBooks;
 import by.yarom.library.Service.CatalogBooksService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import javax.validation.constraints.NotBlank;
 
 @Component("bookValidator")
 public class BookValidator implements Validator {
@@ -23,10 +21,9 @@ public class BookValidator implements Validator {
     }
 
     @Override
-    public void validate(@NotBlank Object o, Errors errors) {
+    public void validate(@Nullable Object o, Errors errors) {
 
         CatalogBooks catalogBooks = (CatalogBooks) o;
-//        if (catalogBooksService.getCatalogBookByInvNum(catalogBooks.getInvNum()) != null){
         if (catalogBooksService.getCatalogBookByInvNum(catalogBooks.getInvNum()) != null){
             errors.rejectValue("invNum","","Книга с таким инвентарным номером уже существует!");
         }

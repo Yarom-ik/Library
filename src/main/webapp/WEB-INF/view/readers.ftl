@@ -46,13 +46,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="input-group col-md-7">
-                <input type="text" name="fio" class="form-control col-md-12" placeholder="Введите фио" required>
+                <input type="text" name="fio" class="form-control col-md-12" placeholder="Введите фио через пробел" required>
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="submit">Найти</button>
                 </div>
             </div>
             <div class="col-mb-3">
-                <a role="button" href="/books.ftl" class="btn btn-primary ">Сбросить параметры поиска</a>
+                <a role="button" href="/readers" class="btn btn-primary ">Сбросить параметры поиска</a>
             </div>
         </div>
     </div>

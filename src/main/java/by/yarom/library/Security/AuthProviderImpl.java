@@ -1,11 +1,8 @@
 package by.yarom.library.Security;
 
-import by.yarom.library.Entity.Role;
 import by.yarom.library.Entity.Users;
-
 import by.yarom.library.Service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +11,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -37,7 +33,7 @@ public class AuthProviderImpl implements AuthenticationProvider {
         }
         String password = authentication.getCredentials().toString();
         if (!password.equals( user.getPassword())) {
-            throw new BadCredentialsException("Bad credentials");
+            throw new BadCredentialsException("Bad credentials Ошибка пароля");
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
 

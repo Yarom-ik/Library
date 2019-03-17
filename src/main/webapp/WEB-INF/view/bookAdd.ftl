@@ -1,5 +1,5 @@
 <#include "main.ftl"/>
-<@main title="Информация"/>
+<@main title="Добавление книги"/>
 <#macro content>
 
 <br>
