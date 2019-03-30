@@ -45,14 +45,17 @@
 <form method="get" action="/readers">
     <div class="container-fluid">
         <div class="row">
-            <div class="input-group col-md-7">
-                <input type="text" name="fio" class="form-control col-md-12" placeholder="Введите фио через пробел" required>
+            <div class="input-group col-md-7  p-1">
+                <input type="text" name="fio" value="<#if nameFIO??>${nameFIO}</#if>" class="form-control col-md-12" placeholder="Введите фио через пробел" required>
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="submit">Найти</button>
                 </div>
             </div>
-            <div class="col-mb-3">
+            <div class="col-mb-3  p-1">
                 <a role="button" href="/readers" class="btn btn-primary ">Сбросить параметры поиска</a>
+            </div>
+            <div class="col-mb-3  p-1">
+                <a role="button" href="/readers?owes=true" class="btn btn-primary data-toggle=" data-toggle="tooltip" data-placement="top" title="Показать читателей которые должны книги">Должники</a>
             </div>
         </div>
     </div>
@@ -69,11 +72,7 @@
         Ошибка поиска введите нужные параметры через пробел
     </div>
     <#elseif readers?has_content>
-
             Найдено читателей: ${count}
-
-
-
             <table class="table table-hover table-sm">
                 <thead class="thead-light">
                 <tr>
@@ -89,8 +88,8 @@
                     <#list readers as reader>
                     <tr>
                         <td>
-                            <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/readerInfo/${reader.idReader}" data-toggle="tooltip" data-placement="top" title="Полная иформация о читателе"><img src="/resources/image/lupa.png"></a>
-                            <a class="btn btn-outline-info btn-sm btn-table " role="button"  href="/addToReader/${reader.idReader}"data-toggle="tooltip" data-placement="top" title="Выбрать к выдаче"><img src="/resources/image/ryka.png"></a>
+                            <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/readerInfo/#{reader.idReader}" data-toggle="tooltip" data-placement="top" title="Полная иформация о читателе"><img src="/resources/image/lupa.png"></a>
+                            <a class="btn btn-outline-info btn-sm btn-table " role="button"  href="/addToReader/#{reader.idReader}"data-toggle="tooltip" data-placement="top" title="Выбрать к выдаче"><img src="/resources/image/ryka.png"></a>
                         </td>
 
                         <td > ${reader.firstName}</a></td>
@@ -127,14 +126,21 @@
                     </li>
                     <#list body as p>
                         <#if p == activePage>
-                            <li class="page-item active"><a class="page-link" href="/readers?page=${p}">${p}</a></li>
+                            <li class="page-item active"><a class="page-link" href="/readers?page=${p}<#if nameFIO??>${(nameFIO??)?string('&fio=${nameFIO}', '')}<#elseif action??>${(action??)?string('&action=${action}', '')}<#elseif owes??>${(owes??)?string('&owes=true','')}</#if>">${p}</a></li>
                         <#elseif p == -1>
                             <li class="page-item disabled"><a class="page-link">...</a></li>
                         <#else>
-                            <li class="page-item"><a class="page-link" href="/readers?page=${p}">${p}</a></li>
+                            <li class="page-item"><a class="page-link" href="/readers?page=${p}<#if nameFIO??>${(nameFIO??)?string('&fio=${nameFIO}', '')}<#elseif action??>${(action??)?string('&action=${action}', '')}<#elseif owes??>${(owes??)?string('&owes=true','')}</#if>">${p}</a></li>
                         </#if>
                     </#list>
-
+                        <#if countFindReaders gt 1 && countFindReaders != activePage>
+                    <li class="page-item">
+                        <a class="page-link" href="/readers?page=${activePage+1}<#if nameFIO??>${(nameFIO??)?string('&fio=${nameFIO}', '')}<#elseif action??>${(action??)?string('&action=${action}', '')}<#elseif owes??>${(owes??)?string('&owes=true','')}</#if>">Следующая</a>
+                    <#else >
+                    <li class="page-item disabled">
+                        <a class="page-link " href="/readers?page=${activePage+1}">Следующая</a>
+                    </#if>
+                    </li>
                 </ul>
                 </#if>
             </div>

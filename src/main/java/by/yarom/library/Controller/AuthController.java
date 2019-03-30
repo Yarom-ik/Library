@@ -1,6 +1,7 @@
 package by.yarom.library.Controller;
 
 
+import by.yarom.library.Entity.CatalogBooks;
 import by.yarom.library.Entity.Users;
 import by.yarom.library.Service.RoleService;
 import by.yarom.library.Service.UsersService;
@@ -12,6 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 @Controller
 public class AuthController {
 
@@ -21,10 +26,15 @@ public class AuthController {
     @Autowired
     private RoleService roleService;
 
-
     @Autowired
     @Qualifier(value = "userValidator")
     private UserValidator userValidator;
+
+    @RequestMapping("/editPassword")
+    public String editPass(){
+
+        return "/editPassword";
+    }
 
     @GetMapping("/")
     public String redirectPage(){

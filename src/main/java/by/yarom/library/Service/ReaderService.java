@@ -32,4 +32,8 @@ public interface ReaderService {
     Reader getReaderByLastName(String lastName);
 
     Reader getReaderByMiddleName(String middleName);
+
+    List<Reader> listReaderByOwes(Integer page);
+
+    Long countFindReaderByOwes();
 }

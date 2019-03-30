@@ -3,7 +3,7 @@
 <#macro content>
 <br>
 
-<form method="post" action="/bookInfo/${book.id}" autocomplete="off">
+<form method="post" action="/bookInfo/#{book.id}" autocomplete="off">
     <div class="card">
         <h6 class="card-header">Информация о книге</h6>
         <div class="card-body">
@@ -12,7 +12,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default">Название</span>
                 </div>
-                <input type="hidden" class="form-control" name="id" value="${book.id}" >
+                <input type="hidden" class="form-control" name="id" value="#{book.id}" >
                 <input type="text" class="form-control ${(nameError??)?string('is-invalid', '')} "
                        name="name" value="${book.name}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                 <#if nameError??>
@@ -89,8 +89,8 @@
 
             <div class=" mb-3">
                 <div >
-                    <#if book.countBook gt 0> <a href="/addToOrder/${book.id}" class="btn btn-primary" id="order">Добавить к выдаче</a>
-                    <#else> <a href="/addToOrder/${book.id}" class="btn btn-primary disabled" role="button" >Добавить к выдаче</a>
+                    <#if book.countBook gt 0> <a href="/addToOrder/#{book.id}" class="btn btn-primary" id="order">Добавить к выдаче</a>
+                    <#else> <a href="/addToOrder/#{book.id}" class="btn btn-primary disabled" role="button" >Добавить к выдаче</a>
                     </#if>
                     <button type="submit" class="btn btn-warning" >Изменить </button>
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalDelete">Удалить</button>
@@ -151,7 +151,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-                <a href="/deleteBook/${book.id}" class="btn btn-primary" role="button">Да</a>
+                <a href="/deleteBook/#{book.id}" class="btn btn-primary" role="button">Да</a>
             </div>
         </div>
     </div>

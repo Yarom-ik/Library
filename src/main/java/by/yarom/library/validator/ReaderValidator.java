@@ -22,12 +22,11 @@ public class ReaderValidator implements Validator {
     @Override
     public void validate(@Nullable Object o, Errors errors) {
         Reader reader = (Reader) o;
-        if ((readerService.getReaderByFirsName(reader.getFirstName()) != null)
-                &&(readerService.getReaderByLastName(reader.getLastName()) != null)
-                &&(readerService.getReaderByMiddleName(reader.getMiddleName()) != null)){
+        if ((readerService.listReaderByName(reader.getFirstName()+" "+reader.getLastName()+" "+reader.getMiddleName(),1).size() != 0)) {
             errors.rejectValue("firstName","","Такой читатель уже существует!");
             errors.rejectValue("lastName","","Такой читатель уже существует!");
             errors.rejectValue("middleName","","Такой читатель уже существует!");
+
         }
 
     }

@@ -51,12 +51,43 @@ public class LibraryController {
     private OrderService orderService;
 
     @Autowired
+    private UsersService usersService;
+
+    @Autowired
     @Qualifier("bookValidator")
     private BookValidator bookValidator;
 
     @Autowired
     @Qualifier("readerValidator")
     private ReaderValidator readerValidator;
+
+    @PostMapping(value = "/editPassword")
+    public String editPassword(@ModelAttribute ("password") String password,
+                               @ModelAttribute ("passwordNew") String passwordNew,
+                               @ModelAttribute ("login") String login,
+                               Model model){
+        Users users = usersService.getUserByLogin(login);
+        System.out.println(password);
+        if (!password.equals(users.getPassword())) {
+            model.addAttribute("errorVerificatePass",true);
+            model.addAttribute("password",password);
+            model.addAttribute("passwordNew",passwordNew);
+        }else {
+            users.setPassword(passwordNew);
+            usersService.updateUser(users);
+            model.addAttribute("editPasswordOkk", true);
+        }
+        listBasket(model);
+        return "/editPassword";
+    }
+
+    @RequestMapping("/deleteReader/{id}")
+    public String deleteReader(@PathVariable (value = "id") int idReader) {
+        Reader reader = readerService.getReaderById(idReader);
+        reader.setActive(false);
+        readerService.updateReader(reader);
+        return "redirect:/readers";
+    }
 
     @RequestMapping(value = "/readerAdd", method = RequestMethod.POST)
     public String readerAddNew(@ModelAttribute @Valid Reader reader,
@@ -84,14 +115,34 @@ public class LibraryController {
     }
 
     @RequestMapping(value = "/categoryes/edit", method = RequestMethod.GET)
-    public String categoryEdit(@ModelAttribute Category category){
-        categoryService.editCategory(category);
+    public String categoryEdit(@ModelAttribute @Valid Category category,
+                               BindingResult bindingResult,
+                               Model model){
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            errorsMap.putAll(ControllerUtils.getErrors(bindingResult));
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("categoryes", categoryService.categoryList());
+            return "/categoryes";
+        }else {
+            categoryService.editCategory(category);
+        }
         return "redirect:/categoryes";
     }
 
     @RequestMapping(value = "/categoryes/add", method = RequestMethod.POST)
-    public String categoryAdd(@ModelAttribute Category category){
-        categoryService.addCategory(category);
+    public String categoryAdd(@ModelAttribute @Valid Category category,
+                              BindingResult bindingResult,
+                              Model model){
+        if (bindingResult.hasErrors()){
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            errorsMap.putAll(ControllerUtils.getErrors(bindingResult));
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("categoryes", categoryService.categoryList());
+            return "/categoryes";
+        }else {
+            categoryService.addCategory(category);
+        }
         return "redirect:/categoryes";
     }
 
@@ -140,6 +191,7 @@ public class LibraryController {
     public String readers(@RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
                           @RequestParam(value = "action", required = false) String actionChar,
                           @RequestParam(value = "fio", required = false) String nameFio,
+                          @RequestParam(value = "owes", required = false) boolean owes,
                           Model model){
         listBasket(model);
 
@@ -167,8 +219,20 @@ public class LibraryController {
             }
             model.addAttribute("countFindReaders", pageCount);
         }
+        if (owes){
+            System.out.println("DOLZHNIKI");
+            model.addAttribute("readers", readerService.listReaderByOwes(page));
+            Long count = readerService.countFindReaderByOwes();
+            model.addAttribute("count",count);
+            Long pageCount = Long.valueOf(0);
+            for(int itr=0;itr<count;itr+=10){
+                pageCount++;
+            }
+            model.addAttribute("owes", true);
+            model.addAttribute("countFindReaders", pageCount);
+        }
 
-        if (actionChar == null && nameFio == null) {
+        if (actionChar == null && nameFio == null && owes == false) {
             model.addAttribute("readers", readerService.listReader(page));
             Long count = readerService.countFindReader();
             model.addAttribute("count", count);
@@ -178,6 +242,8 @@ public class LibraryController {
             }
             model.addAttribute("countFindReaders", pageCount);
         }
+        model.addAttribute("action", actionChar);
+        model.addAttribute("nameFIO",nameFio);
         model.addAttribute("activePage", page);
         return "/readers";
     }
@@ -196,7 +262,7 @@ public class LibraryController {
             model.mergeAttributes(errorsMap);
             model.addAttribute("book", catalogBooks);
             model.addAttribute("author", author);
-            model.addAttribute("category", categoryService.categoryList());
+            model.addAttribute("category",categoryService.getCategory(category.getId_Category()));
         }else {
             Category category1 = categoryService.getCategory(category.getId_Category());
             catalogBooks.setCategory(category1);
@@ -212,7 +278,7 @@ public class LibraryController {
             model.addAttribute("addOk", true);
         }
         listBasket(model);
-        model.addAttribute("category", categoryService.categoryList());
+        model.addAttribute("categoryes", categoryService.categoryList());
         model.addAttribute("authors", authorService.listAuthors());
 
         return "/bookAdd";
@@ -222,7 +288,7 @@ public class LibraryController {
     public String bookAdd(Model model){
         listBasket(model);
         model.addAttribute("authors", authorService.listAuthors());
-        model.addAttribute("category", categoryService.categoryList());
+        model.addAttribute("categoryes", categoryService.categoryList());
         return "/bookAdd";
     }
 
@@ -311,13 +377,12 @@ public class LibraryController {
 
     @RequestMapping("/orderMin/{id}")
     public String orderMin(@PathVariable ("id") int id){
-        System.out.println(id);
         Iterator<Map.Entry<Integer,Integer>> iter = basketBook.getBooksBasket().entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<Integer,Integer> entry = iter.next();
             if(id == (entry.getKey())){
                 int col = entry.getValue();
-                if (col>0) {
+                if (col>1) {
                     col--;
                     entry.setValue(col);
                 }
@@ -416,11 +481,11 @@ public class LibraryController {
         return "redirect:" + request.getHeader("referer");
     }
 
-    @RequestMapping("/deleteBookId/{id}")
-    public String deleteBookId(@PathVariable("id")int id){
-        catalogBooksService.deleteBook(id);
-        return "redirect:/books";
-    }
+//    @RequestMapping("/deleteBookId/{id}")
+//    public String deleteBookId(@PathVariable("id")int id){
+//        catalogBooksService.deleteBook(id);
+//        return "redirect:/books";
+//    }
 
     @GetMapping("/books")
     //@PreAuthorize("hasRole('yarom')")

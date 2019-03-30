@@ -181,4 +181,22 @@ public class ReaderDaoImpl implements ReaderDao {
                 .uniqueResult();
         return reader;
     }
+
+    @Override
+    public List<Reader> listReaderByOwes(Integer page) {
+        Integer maxResult = 10;
+        page = (page - 1) * 10;
+        List<Reader> readerList = currentSession().createQuery("select r from Reader r join fetch r.orders as rr where rr.finished = false and r.active = true group by r")
+                .setFirstResult(page!=null?page:0)
+                .setMaxResults(maxResult!=null?maxResult:10)
+                .list();
+        System.out.println(readerList);
+        return readerList;
+    }
+
+    @Override
+    public Long countFindReaderByOwes() {
+        List list = currentSession().createQuery("select r from Reader r join fetch r.orders as rr where rr.finished = false and r.active = true group by r").list();
+        return Long.valueOf(list.size());
+    }
 }

@@ -8,13 +8,11 @@
     <div class="card">
         <h6 class="card-header">Информация о читателе</h6>
         <div class="card-body">
-
-
             <div class="input-group mb-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default">Фамилия</span>
                 </div>
-                <input type="text" class="form-control ${(firstNameError??)?string('is-invalid', '')}" placeholder="Введите фамилию"
+                <input type="text" id="firstName" class="form-control ${(firstNameError??)?string('is-invalid', '')}" placeholder="Введите фамилию"
                        name="firstName" value="<#if readerNew??>${readerNew.firstName}</#if>" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                 <#if firstNameError??>
                     <div class="invalid-feedback">
@@ -60,15 +58,11 @@
                     </div>
                 </#if>
             </div>
-
-
             <div class="input-group ">
                     <div class="input-group-prepend">
                         <div class="">
                             <button type="submit" class="btn btn-primary" role="button" id="btn1" name="btn1" >Добавить</button>
                         </div>
-
-
                     </div>
             </div>
         </div>
@@ -76,15 +70,20 @@
 </form>
 
 <script>
+    //    запрет ввода пробелов
+    $('input').keyup(function(){
+        str = $(this).val()
+        str = str.replace(/\s/g,'')
+        $(this).val(str)
+    });
     $(function() {
-        //задание заполнителя с помощью параметра placeholder
-        $("#index").mask("375(99) 999-99-99");
+        //задание масски ввода телефона
+        $("#index").mask("375(99)999-99-99");
+
     });
 </script>
 
-<!-- Подключение библиотеки jQuery -->
-<#--<script src="/resources/js/jjquery.js"></script>-->
-<!-- Подключение jQuery плагина Masked Input -->
+<!-- Подключение библиотеку jQuery маки ввода-->
 <script src="/resources/js/jquery.maskedinput.min.js"></script>
 
     <#if addOk??>

@@ -1,6 +1,7 @@
 package by.yarom.library.Entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -12,6 +13,7 @@ public class Category {
     @Column (name = "id_category")
     private int id_Category;
 
+    @Size(min = 1, max = 50, message = "Слишком длинное название категории")
     @Column (name = "name")
     private String categoryName;
 

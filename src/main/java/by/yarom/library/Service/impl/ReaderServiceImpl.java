@@ -83,4 +83,14 @@ public class ReaderServiceImpl implements ReaderService{
     public Reader getReaderByMiddleName(String middleName) {
         return readerDao.getReaderByMiddleName(middleName);
     }
+
+    @Override
+    public List<Reader> listReaderByOwes(Integer page) {
+        return readerDao.listReaderByOwes(page);
+    }
+
+    @Override
+    public Long countFindReaderByOwes() {
+        return readerDao.countFindReaderByOwes();
+    }
 }

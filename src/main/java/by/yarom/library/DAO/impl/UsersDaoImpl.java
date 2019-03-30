@@ -36,26 +36,19 @@ public class UsersDaoImpl implements UsersDao {
 
     @Override
     public void updateUser(Users user) {
-
+        currentSession().update(user);
     }
 
     @Override
     public void deleteUser(int id) {
-
     }
 
     @Override
     public Users getUserByLogin(String login) {
-        System.out.println("prohod " + login);
+        Users users = (Users) currentSession().createQuery("from Users u where u.login =:login")
+                .setParameter("login",login)
+                .uniqueResult();
 
-        CriteriaBuilder builder = currentSession().getCriteriaBuilder();
-        CriteriaQuery<Users> criteria = builder.createQuery(Users.class);
-        Root<Users> employeeRoot=criteria.from(Users.class);
-        criteria.select(employeeRoot);
-        criteria.where(builder.equal(employeeRoot.get("login"), login));
-        Users users = currentSession().createQuery(criteria).uniqueResult();
-
-        System.out.println("iz zaprosa "+currentSession().createQuery(criteria).uniqueResult());
         return users;
 
 

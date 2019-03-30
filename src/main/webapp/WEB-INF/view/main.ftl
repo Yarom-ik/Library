@@ -45,18 +45,10 @@
             overflow: auto;
         }
         /*futer*/
-        /*.container {*/
-            /*width: auto;*/
-            /*max-width: fit-content;*/
-            /*padding: 0 15px;*/
-        /*}*/
-
         .footer {
             background-color: #f5f5f5;
         }
-        <#--body{-->
-        <#--padding:20px;-->
-        <#--}-->
+
     </style>
 </head>
 <body class="d-flex flex-column h-100">
@@ -88,8 +80,6 @@
             <li class="nav-item ">
                 <a class="nav-link" href="/readers">Читатели </a>
             </li>
-
-
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Редактор
@@ -117,9 +107,7 @@
             <a class="nav-item nav-link dropdown-toggle mr-md-2" style="color: #a4a4a4" href="#"  data-toggle="dropdown"> <img src="/resources/image/profle.png">
                 ${nameUserLogin}</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                <a class="dropdown-item " href="#"> Изменить пароль</a>
-
-
+                <a class="dropdown-item btn" href="/editPassword"> Изменить пароль</a>
              </div>
         </div>
         <a href="/logout" class="btn btn-outline-secondary btn-sm" tabindex="-1" role="button" aria-disabled="true">Выход</a>
@@ -133,7 +121,6 @@
         <div class="col-md-2"> <#include "contentLeft.ftl"/></div>
         <div class="col-md-10"> <@content/> </div>
     </div>
-
 </div>
 
 <footer class="footer mt-auto py-2">
@@ -141,6 +128,7 @@
         <span class="text-muted">2019 Библиотека УО "ГрГУОР"</span>
     </div>
 </footer>
+
 
 
 <!-- Optional JavaScript -->

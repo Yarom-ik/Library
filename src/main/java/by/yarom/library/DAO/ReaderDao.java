@@ -31,4 +31,10 @@ public interface ReaderDao {
     Reader getReaderByLastName(String lastName);
 
     Reader getReaderByMiddleName(String middleName);
+
+    List<Reader> listReaderByOwes(Integer page);
+
+    Long countFindReaderByOwes();
+
+
 }

@@ -40,12 +40,15 @@
                     <label class="input-group-text" >Категория</label>
                 </div>
                 <select class="custom-select" type="text" name="id_Category" id="id_Category" required>
-                    <option type="text" value="" selected>Выберите</option>
-                    <#list category as cat>
+                    <#if category?has_content>
+                        <#if category.categoryName??><option type="text" value="${category.id_Category}" selected>${category.categoryName}</option></#if>
+                    <#else >
+                        <option type="text" value="" selected>Выберите</option>
+                    </#if>
+                    <#list categoryes as cat>
                         <option value="${cat.id_Category}">${cat.categoryName}</option>
                     </#list>
                 </select>
-                <#--<div class="invalid-feedback">Выберите категорию</div>-->
             </div>
 
             <div class="input-group mb-4">
@@ -84,29 +87,28 @@
                     </div>
                 </#if>
             </div>
-
-
             <div class="input-group ">
                     <div class="input-group-prepend">
                         <div class="">
                             <button type="submit" class="btn btn-primary" role="button" id="btn1" name="btn1" >Добавить</button>
                         </div>
-                        <#if addOk??>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                Книга успешно добавлена
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        <script>
-                            $("input").val("");
-                        </script>
-                        </#if>
                     </div>
             </div>
         </div>
     </div>
 </form>
+
+    <#if addOk??>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Книга успешно добавлена
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <script>
+            $("input").val("");
+        </script>
+    </div>
+    </#if>
 
 <#--<script src="/resources/js/jquery-3.2.1.slim.min.js"></script>-->
 <#--<script src="/resources/js/popper.min.js"></script>-->
@@ -138,7 +140,6 @@
         }
     });
 </script>
-
 
 
 </#macro>

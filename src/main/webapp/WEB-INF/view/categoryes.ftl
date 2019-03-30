@@ -13,7 +13,11 @@
         <#list categoryes as category>
         <tr>
             <td>
-                <button class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-target="#modalEdit" data-category="${category.categoryName}" data-id="${category.id_Category}" data-placement="top" title="Изменить категорию"><img src="/resources/image/edit.png"></button>
+                <button class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-target="#modalEdit" data-category="${category.categoryName}" data-id="${category.id_Category}" >
+                    <span class="tags"  data-toggle="tooltip"   data-placement="top" title="Изменить категорию">
+                        <img src="/resources/image/edit.png">
+                    </span>
+                </button>
                 <#--<a class="btn btn-outline-info btn-sm btn-table " role="button"  href="/addToOrder/${book.id}"data-toggle="tooltip" data-placement="top" title="Добавить к выдаче"><img src="/resources/image/ryka.png"></a>-->
                 <#--<button type="button" class="btn btn-primary editButton" data-toggle="modal" data-target="#modalEdit" data-category="${category.categoryName}" data-id="${category.id_Category}" >Edit</button>-->
             </td>
@@ -23,13 +27,21 @@
         </#list>
     </tbody>
 </table>
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalAdd">
+    <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#exampleModalAdd">
         Добавить
     </button>
 </div>
 
 </div>
 
+<#if categoryNameError??>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>${categoryNameError},</strong> название категории не должно превышать 50-ти символов
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+</#if>
 
 <!-- Modal Edit -->
 <form method="get" action="/categoryes/edit">

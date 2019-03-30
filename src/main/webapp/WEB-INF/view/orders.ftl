@@ -9,7 +9,7 @@
 
     <#if basket?has_content>
         <#if reader?has_content>
-            <h6> Читатель: <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/readerInfo/${reader.idReader}" data-toggle="tooltip" data-placement="top" title="Полная иформация о читателе"><img src="/resources/image/lupa.png"></a> ${reader.firstName} ${reader.lastName} ${reader.middleName}</h6>
+            <h6> Читатель: <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/readerInfo/#{reader.idReader}" data-toggle="tooltip" data-placement="top" title="Полная иформация о читателе"><img src="/resources/image/lupa.png"></a> ${reader.firstName} ${reader.lastName} ${reader.middleName}</h6>
         <#else><div class="alert alert-warning" role="alert"><h6>Читатель не выбран</h6></div>
         </#if>
 
@@ -30,16 +30,16 @@
             <#list basket as key,value>
             <tr>
                 <td>
-                    <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/bookInfo/${key.id}" data-toggle="tooltip" data-placement="top" title="Полная иформация о книге"><img src="/resources/image/lupa.png"></a>
-                    <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/clearBasketId/${key.id}" data-toggle="tooltip" data-placement="top" title="Удалить из выдачи"><img src="/resources/image/delete.png"></a>
+                    <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/bookInfo/#{key.id}" data-toggle="tooltip" data-placement="top" title="Полная иформация о книге"><img src="/resources/image/lupa.png"></a>
+                    <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/clearBasketId/#{key.id}" data-toggle="tooltip" data-placement="top" title="Удалить из выдачи"><img src="/resources/image/delete.png"></a>
                 </td>
                 <td > ${key.name}</a></td>
                 <td>${key.author.authorName}</td>
                 <td>#{key.invNum}</td>
                 <td>${key.countBook}</td>
-                <td class="text-center"><a href="/orderMin/${key.id}" class="btn btn-outline-danger btn-sm btn-circle" role="button"><img src="/resources/image/minus.png"></a>
+                <td class="text-center"><a href="/orderMin/#{key.id}" class="btn btn-outline-danger btn-sm btn-circle" role="button"><img src="/resources/image/minus.png"></a>
                 ${value}
-                    <a href="/orderPlus/${key.id}" class="btn btn-outline-success btn-sm btn-circle" role="button"><img src="/resources/image/plus.png"></a> </td>
+                    <a href="/orderPlus/#{key.id}" class="btn btn-outline-success btn-sm btn-circle" role="button"><img src="/resources/image/plus.png"></a> </td>
 
             </tr>
             </#list>
@@ -55,9 +55,6 @@
         <a href="/clearBasket" class="btn btn-warning" role="button">Очистить</a></span>
 
 </form>
-<#--<form method="get" action="/clearBasket">-->
-    <#--<button type="submit" class="btn btn-warning" >Очистить</button>-->
-<#--</form>-->
 
 <#else ><div class="alert alert-info" role="alert"> Нет книг к выдаче</div>
 </#if>

@@ -45,7 +45,7 @@
 <form method="get" action="/books">
 <div class="container-fluid">
     <div class="row">
-        <div class="input-group input-group col-md-8">
+        <div class="input-group input-group col-md-8 p-1">
             <input type="text" name="find" value="<#if findNameInput??>${findNameInput}</#if>" class="form-control col-md-7" placeholder="Поиск по книгам" aria-label="Recipient's username" aria-describedby="button-addon2" required>
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01">Поиск по:</label>
@@ -60,7 +60,7 @@
                     <button class="btn btn-primary" type="submit" id="button-addon2">Найти</button>
                 </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 p-1">
             <a role="button" href="/books" class="btn btn-primary">Сбросить параметры поиска</a>
         </div>
     </div>
@@ -95,8 +95,8 @@
                         <#--<tr onclick="window.location='/bookInfo/${book.id}'">-->
                         <tr>
                             <td>
-                                <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/bookInfo/${book.id}" data-toggle="tooltip" data-placement="top" title="Полная иформация о книге"><img src="/resources/image/lupa.png"></a>
-                                <a class="btn btn-outline-info btn-sm btn-table " role="button"  href="/addToOrder/${book.id}"data-toggle="tooltip" data-placement="top" title="Добавить к выдаче"><img src="/resources/image/ryka.png"></a>
+                                <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/bookInfo/#{book.id}" data-toggle="tooltip" data-placement="top" title="Полная иформация о книге"><img src="/resources/image/lupa.png"></a>
+                                <a class="btn btn-outline-info btn-sm btn-table " role="button"  href="/addToOrder/#{book.id}"data-toggle="tooltip" data-placement="top" title="Добавить к выдаче"><img src="/resources/image/ryka.png"></a>
                             </td>
                             <td > ${book.name}</a></td>
                             <td><a role="button" href="/books?find=${book.author.authorName}&param=author" style="color: black" >${book.author.authorName}</a></td>

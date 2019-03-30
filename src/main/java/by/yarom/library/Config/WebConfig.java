@@ -3,6 +3,8 @@ package by.yarom.library.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -16,6 +18,11 @@ import java.util.Properties;
 @EnableWebMvc
 @ComponentScan(basePackages = "by.yarom.library")
 public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
+    }
 
     @Bean
     public FreeMarkerViewResolver viewResolver() {
@@ -42,5 +49,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+//        registry.addResourceHandler("/resources/**").addResourceLocations("WEB-INF/backup/");
     }
+
+
 }
