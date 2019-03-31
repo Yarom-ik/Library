@@ -25,4 +25,6 @@ public interface GiveService {
 
     List<Give> giveListByOrderId(int idOrder, int idReader);
 
+    List<Give> giveListByReaderByBooksNotFinished(String firstName, String lastName, String middleName);
+
 }

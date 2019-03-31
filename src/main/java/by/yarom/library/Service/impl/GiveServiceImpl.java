@@ -99,4 +99,9 @@ import java.util.List;
     public List<Give> giveListByOrderId(int idOrder, int idReader) {
         return giveDao.giveListByOrderId(idOrder, idReader);
     }
+
+    @Override
+    public List<Give> giveListByReaderByBooksNotFinished(String firstName, String lastName, String middleName) {
+        return giveDao.giveListByReaderByBooksNotFinished(firstName, lastName, middleName);
+    }
 }

@@ -10,6 +10,6 @@ public class MulitpartExceptionHandler {
     @ExceptionHandler(MultipartException.class)
     public String handleError(MultipartException e, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("message", e.getCause().getMessage());
-        return "/error";
+        return "redirect:/error";
     }
 }

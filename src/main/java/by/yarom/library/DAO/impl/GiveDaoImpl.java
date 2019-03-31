@@ -4,9 +4,11 @@ import by.yarom.library.DAO.GiveDao;
 import by.yarom.library.Entity.Give;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository("GiveDao")
@@ -69,5 +71,18 @@ public class GiveDaoImpl implements GiveDao {
                 .setParameter("finish", finish)
                 .list();
         return giveListByOrderIdByFinished;
+    }
+
+    @Override
+    public List<Give> giveListByReaderByBooksNotFinished(String firstName, String lastName, String middleName) {
+
+        List<Give> giveListByReaderByBooksNotFinished = currentSession().createQuery("from Give where order.reader.firstName =:firstName " +
+                "and order.reader.lastName =:lastName and order.reader.middleName =: middleName and finished = false ")
+                        .setParameter("firstName",firstName)
+                        .setParameter("lastName", lastName)
+                        .setParameter("middleName", middleName)
+                        .list();
+
+        return giveListByReaderByBooksNotFinished;
     }
 }

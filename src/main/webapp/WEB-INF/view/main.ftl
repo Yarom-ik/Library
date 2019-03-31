@@ -62,7 +62,7 @@
 <div>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f5f5f5;">
 
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="/books">
         <img src="/resources/image/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
         Электронная библиотека УОР</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

@@ -1,10 +1,12 @@
 package by.yarom.library;
 
 
+import by.yarom.library.Entity.Give;
 import by.yarom.library.Entity.Reader;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 
 import javax.swing.*;
@@ -14,6 +16,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -56,18 +59,52 @@ public class Main {
 //            }
 //        }
 //        System.out.println(booksBacket);
+        String fio = "Петров";
+
+        List<String> list = new LinkedList<>();
+        for (String name : fio.split(" ")) {
+            list.add(name);
+        }
+
+        SessionFactory sessionFactory =
+                new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+        Query query = null;
+        switch (list.size()){
+            case 1: {
+                query = session.createQuery("from Give g where order.reader.firstName =:firstName and finished = false");
+                query.setParameter("firstName",list.get(0));
+                break;
+            }
+            case 2: {
+                query = session.createQuery("from Give where order.reader.firstName =:firstName " +
+                        "and order.reader.lastName =:lastName and finished = false ");
+                query.setParameter("firstName",list.get(0))
+                        .setParameter("lastName", list.get(1));
+                break;
+            }
+            case 3: {
+                query = session.createQuery("from Give where order.reader.firstName =:firstName " +
+                        "and order.reader.lastName =:lastName and order.reader.middleName =: middleName and finished = false ");
+                query.setParameter("firstName",list.get(0))
+                        .setParameter("lastName", list.get(1))
+                        .setParameter("middleName", list.get(2));
+                break;
+            }
+            default:
+                System.out.println("null");
+        }
 
 
+        List<Give> giveListByOrderIdByFinished = query.list();
 
-//        SessionFactory sessionFactory =
-//                new Configuration().configure().buildSessionFactory();
-//
-//        Session session = sessionFactory.openSession();
+        for (Give i : giveListByOrderIdByFinished) {
+            System.out.println(i.toString() + i.getCatalogBooks().getName());
+        }
 
-//        Transaction transaction = null;
-//
-//           transaction =  session.beginTransaction();
-
+        session.close();
+        sessionFactory.close();
 
 
 //        List<Reader> readerList = session.createQuery("select r from Reader r join fetch r.orders as rr where rr.finished = false and r.active = true group by r")
@@ -86,68 +123,7 @@ public class Main {
 //        }
 
 
-        File file = new File(new File("a.java").getAbsolutePath());
-        System.out.println(file);
 
-        try {
-            Process runtimeProcess = Runtime.getRuntime().exec(new String[]{"cmd.exe","/c","mysqldump --host=localhost --port=3306 --user=root --password=root --host=localhost --routines library > D:/file_name.sql"});
-
-            int processComplete = runtimeProcess.waitFor();
-
-            if (processComplete == 0) {
-                System.out.println("Backup Complete");
-            } else {
-                System.out.println("Backup Failure!!!");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-
-        /*NOTE: Getting path to the Jar file being executed*/
-        /*NOTE: YourImplementingClass-> replace with the class executing the code*/
-            CodeSource codeSource = Main.class.getProtectionDomain().getCodeSource();
-            File jarFile = new File(codeSource.getLocation().toURI().getPath());
-            String jarDir = jarFile.getParentFile().getPath();
-
-
-        /*NOTE: Creating Database Constraints*/
-            String dbName = "library";
-            String dbUser = "root";
-            String dbPass = "root";
-
-        /*NOTE: Creating Path Constraints for folder saving*/
-        /*NOTE: Here the backup folder is created for saving inside it*/
-            String folderPath = jarDir + "\\backup";
-
-        /*NOTE: Creating Folder if it does not exist*/
-            File f1 = new File(folderPath);
-            f1.mkdir();
-
-        /*NOTE: Creating Path Constraints for backup saving*/
-        /*NOTE: Here the backup is saved in a folder called backup with the name backup.sql*/
-            String savePath = "\"" + jarDir + "\\backup\\" + "backup.sql\"";
-
-        /*NOTE: Used to create a cmd command*/
-//            String executeCmd = "mysqldump -u" + dbUser + " -p" + dbPass + " --database " + dbName + " -r " + savePath;
-
-        /*NOTE: Executing the command here*/
-            Process runtimeProcess = Runtime.getRuntime().exec(new String[]{"cmd.exe","/c","mysqldump --host=localhost --port=3306 --user=root --password=root --host=localhost --routines library > "+ savePath});
-            int processComplete = runtimeProcess.waitFor();
-
-        /*NOTE: processComplete=0 if correctly executed, will contain other values if not*/
-            if (processComplete == 0) {
-                System.out.println("Backup Complete");
-            } else {
-                System.out.println("Backup Failure");
-            }
-
-        } catch (URISyntaxException | IOException | InterruptedException ex) {
-            JOptionPane.showMessageDialog(null, "Error at Backuprestore" + ex.getMessage());
-        }
         //Query query = session.createQuery("from Role where title ='admin'");
 
 //               List<Role> user1 = query.getResultList();
@@ -170,10 +146,10 @@ public class Main {
 //        for(Object []obj: products) {
 //            System.out.println(obj[0].toString());
 //        }
-   }
+//   }
 //        SessionFactory sessionFactory = HibernateUtil.getSessionfactory();
 //        Session session = sessionFactory.openSession();
-//        List<Currency> products = null;
+//        List<> products = null;
 //
 //        try {
 //            session.beginTransaction();
@@ -196,4 +172,4 @@ public class Main {
 //        }
 //
 //    }
-}
+}}

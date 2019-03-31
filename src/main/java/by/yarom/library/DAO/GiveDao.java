@@ -21,4 +21,6 @@ public interface GiveDao {
     List<Give> giveListByOrderId(int idOrder, int idReader);
 
     List<Give> giveListByOrderIdByFinished(int idOrder, int idReader, boolean finish);
+
+    List<Give> giveListByReaderByBooksNotFinished(String firstName, String lastName, String middleName);
 }
