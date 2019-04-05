@@ -1,10 +1,13 @@
 package by.yarom.library.backup;
 
+import org.apache.log4j.Logger;
 import org.springframework.ui.Model;
 
 import java.io.IOException;
 
 public class Backup {
+
+    final static Logger logger = Logger.getLogger(Backup.class);
 
     public static void backupSQL(String fileDirectory) throws InterruptedException, IOException {
 
@@ -19,6 +22,7 @@ public class Backup {
             if (processComplete == 0) {
                 System.out.println("statusBackup Восстановление завершено успешно");
             } else {
+                logger.error("Ошибка выполнения запроса на резервное копирование ");
                 throw new InterruptedException("Ошибка выполнения запроса на резервное копирование");
             }
     }

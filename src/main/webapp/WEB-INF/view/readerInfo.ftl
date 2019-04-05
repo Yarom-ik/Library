@@ -125,3 +125,6 @@
     </div>
 </div>
 </#macro>
+<#macro contentLeft>
+    <#include "contentLeft.ftl"/>
+</#macro>

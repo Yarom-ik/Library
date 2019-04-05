@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
-public class GlobalExceptions {
+public class GlobalExceptions extends Exception {
 
     @ExceptionHandler(JDBCConnectionException.class)
     public String handleError(JDBCConnectionException e, RedirectAttributes redirectAttributes) {

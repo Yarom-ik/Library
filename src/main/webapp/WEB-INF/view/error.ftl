@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<form class="form-signin" action="/login/process" method="post">
+<form class="form-signin">
     <div class="text-center mb-4">
         <img class="mb-4" src="/resources/image/error.png" alt="" width="100" height="100">
         <h1 class="h3 mb-3 font-weight-normal">ОШИБКА!</h1>

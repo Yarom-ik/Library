@@ -5,6 +5,7 @@ import by.yarom.library.Service.*;
 import by.yarom.library.backetBook.BasketBook;
 import by.yarom.library.validator.BookValidator;
 import by.yarom.library.validator.ReaderValidator;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -60,6 +61,8 @@ public class LibraryController {
     @Autowired
     @Qualifier("readerValidator")
     private ReaderValidator readerValidator;
+
+    final static Logger logger = Logger.getLogger(LibraryController.class);
 
     @PostMapping(value = "/editPassword")
     public String editPassword(@ModelAttribute ("password") String password,
@@ -275,6 +278,7 @@ public class LibraryController {
                 catalogBooks.setAuthor(author);
             }
             catalogBooksService.addCatalogBook(catalogBooks);
+            logger.info("book add is ok  -" + catalogBooks);
             model.addAttribute("addOk", true);
         }
         listBasket(model);
@@ -297,6 +301,7 @@ public class LibraryController {
         CatalogBooks catalogBooks = catalogBooksService.getBookById(idBook);
         catalogBooks.setActive(false);
         catalogBooksService.updateBook(catalogBooks);
+        logger.info("book is deleted ok -" + catalogBooks);
         return "redirect:/books";
     }
 
@@ -329,7 +334,7 @@ public class LibraryController {
             model.addAttribute("book", catalogBooks);
             catalogBooksService.updateBook(catalogBooks);
             model.addAttribute("category", categoryService.categoryList());
-
+            logger.info("book is edit ok -" + catalogBooks);
             model.addAttribute("editOK", true);
         }
         listBasket(model);
@@ -418,8 +423,7 @@ public class LibraryController {
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
     public String order(Model model) throws Exception{
 
-        Reader reader = new Reader();
-        reader = readerService.getReaderById(basketBook.getReaderId());
+        Reader reader = readerService.getReaderById(basketBook.getReaderId());
         Order order = new Order();
         order.setData(new Date());
         order.setFinished(false);
@@ -438,7 +442,7 @@ public class LibraryController {
                     TransactionAspectSupport.currentTransactionStatus()
                             .setRollbackOnly();
                     listBasket(model);
-
+                    logger.debug("error order book count < 0");
                     return "/orders";
                 }
                 for (int i = 0; i < entry.getValue(); i++) {
@@ -456,7 +460,7 @@ public class LibraryController {
                 TransactionAspectSupport.currentTransactionStatus()
                         .setRollbackOnly();
                 listBasket(model);
-
+                logger.error("Ошибка выдачи книг");
                 return "/orders";
             }
         }
@@ -480,12 +484,6 @@ public class LibraryController {
         basketBook.addToBasket(id,1);
         return "redirect:" + request.getHeader("referer");
     }
-
-//    @RequestMapping("/deleteBookId/{id}")
-//    public String deleteBookId(@PathVariable("id")int id){
-//        catalogBooksService.deleteBook(id);
-//        return "redirect:/books";
-//    }
 
     @GetMapping("/books")
     //@PreAuthorize("hasRole('yarom')")

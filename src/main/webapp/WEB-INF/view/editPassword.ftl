@@ -83,7 +83,17 @@
 
 </form>
 </#macro>
+<#macro contentLeft>
+<br>
 
+<ul class="list-group">
+    <li class="list-group-item list-group-item-secondary">Информация:</li>
+
+    <li class="list-group-item">Для изменения пароля сначала введите свой старый пароль, затем новый </li>
+
+
+</ul>
+</#macro>
 
 
 

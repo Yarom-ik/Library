@@ -49,7 +49,7 @@
 
 
 <form method="post" action="/orders">
-    <button type="submit" class="btn btn-primary " >Выдать книги</button>
+    <button type="submit" class="btn btn-primary " <#if reader?has_content> <#else> disabled </#if> >Выдать книги</button>
 
     <span class="input-group-btn ">
         <a href="/clearBasket" class="btn btn-warning" role="button">Очистить</a></span>
@@ -78,36 +78,7 @@
     </div>
     </#if>
 
-
-<!-- Modal -->
-<#--<form method="post" action="/orders">-->
-<#--<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-    <#--<div class="modal-dialog" role="document">-->
-        <#--<div class="modal-content">-->
-            <#--<div class="modal-header">-->
-                <#--<h5 class="modal-title" id="exampleModalLabel">Читатель:-->
-                    <#--<#if reader?has_content>-->
-                        <#--<li class="list-group-item"> ${reader.lastName} ${reader.firstName}</li>-->
-                    <#--</#if></h5>-->
-                <#--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-                    <#--<span aria-hidden="true">&times;</span>-->
-                <#--</button>-->
-            <#--</div>-->
-            <#--<div class="modal-body">-->
-                <#--<li class="list-group-item"> Книги: </li>-->
-                <#--<#list basket as back>-->
-                    <#--<li class="list-group-item">${back.name}</li>-->
-                <#--</#list>-->
-            <#--</div>-->
-            <#--<div class="modal-footer">-->
-                <#--<button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>-->
-                <#--<button type="submit" class="btn btn-secondary" data-dismiss="modal">VYDAT</button>-->
-                <#--<a href="/orders" methods="post" class="btn btn-primary">Выдать</a>-->
-
-            <#--</div>-->
-        <#--</div>-->
-    <#--</div>-->
-<#--</div>-->
-<#--</form>-->
-
+</#macro>
+<#macro contentLeft>
+    <#include "contentLeft.ftl"/>
 </#macro>

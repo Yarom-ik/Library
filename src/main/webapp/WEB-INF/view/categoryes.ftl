@@ -111,7 +111,9 @@
 </div>
 </form>
 </#macro>
-
+<#macro contentLeft>
+    <#include "contentLeft.ftl"/>
+</#macro>
 
 
 

@@ -108,7 +108,7 @@
     </#if>
 </form>
 
-<script src="/resources/js/bootstrap3-typeahead.js"></script>
+<#--<script src="/resources/js/bootstrap3-typeahead.js"></script>-->
 <script>
     var $input = $(".typeahead");
     var $dad = [];
@@ -158,7 +158,9 @@
 </div>
 
 </#macro>
-
+<#macro contentLeft>
+    <#include "contentLeft.ftl"/>
+</#macro>
 
 
 

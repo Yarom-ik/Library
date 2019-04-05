@@ -159,7 +159,9 @@
     </#if>
 
 </#macro>
-
+<#macro contentLeft>
+    <#include "contentLeft.ftl"/>
+</#macro>
 
 
 

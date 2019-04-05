@@ -84,7 +84,7 @@
 </script>
 
 <!-- Подключение библиотеку jQuery маки ввода-->
-<script src="/resources/js/jquery.maskedinput.min.js"></script>
+<#--<script src="/resources/js/jquery.maskedinput.min.js"></script>-->
 
     <#if addOk??>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -97,7 +97,9 @@
 
 
 </#macro>
-
+<#macro contentLeft>
+    <#include "contentLeft.ftl"/>
+</#macro>
 
 
 

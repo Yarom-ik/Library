@@ -1,6 +1,7 @@
 package by.yarom.library.Controller;
 
 import by.yarom.library.backup.Backup;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,8 @@ public class AdminController {
 
     private String nameSaveFile = "backup.sql";
 
+    final static Logger logger = Logger.getLogger(AdminController.class);
+
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
     public String restoreBackup(@RequestParam("file") MultipartFile file,
                                 HttpServletRequest request,
@@ -44,6 +47,7 @@ public class AdminController {
             file.transferTo(new File(path.toString()));
             Backup.backupRestoneSQL(model, path.toString());
         }else {
+            logger.error("error load backup file ");
             throw new IOException("Ошибка файла");
         }
         return "/admin";
@@ -71,6 +75,7 @@ public class AdminController {
     @ExceptionHandler(value = InterruptedException.class)
     public ModelAndView handleIOException(InterruptedException exception) {
         ModelAndView modelAndView = new ModelAndView("/error");
+        logger.error("error backup " + exception.getLocalizedMessage());
         modelAndView.addObject("message", exception.getMessage());
         return modelAndView;
     }
@@ -78,12 +83,14 @@ public class AdminController {
     @ExceptionHandler(value = IOException.class)
     public ModelAndView handleIOException(IOException exception) {
         ModelAndView modelAndView = new ModelAndView("/error");
+        logger.error(exception.getMessage());
         modelAndView.addObject("message", exception.getMessage());
         return modelAndView;
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(){
+
         return "/admin";
     }
 }

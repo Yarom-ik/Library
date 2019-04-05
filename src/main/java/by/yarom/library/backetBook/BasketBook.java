@@ -1,6 +1,5 @@
 package by.yarom.library.backetBook;
 
-import by.yarom.library.Entity.CatalogBooks;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -33,8 +32,6 @@ public class BasketBook {
         booksBasket.replace(id, col);
     }
 
-
-
     public void delBasketBook (int id, int count){
         Iterator<Map.Entry<Integer,Integer>> iter = booksBasket.entrySet().iterator();
         while (iter.hasNext()) {
@@ -48,8 +45,6 @@ public class BasketBook {
 
     public BasketBook() {
     }
-
-
 
     public int getReaderId() {
         return readerId;

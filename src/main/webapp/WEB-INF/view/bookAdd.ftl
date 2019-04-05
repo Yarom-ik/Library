@@ -113,7 +113,9 @@
 <#--<script src="/resources/js/jquery-3.2.1.slim.min.js"></script>-->
 <#--<script src="/resources/js/popper.min.js"></script>-->
 <#--<script src="/resources/js/bootstrap.min.js"></script>-->
-<script src="/resources/js/bootstrap3-typeahead.js"></script>
+
+<#--нужно-->
+<#--<script src="/resources/js/bootstrap3-typeahead.js"></script>-->
 <script>
     var $input = $(".typeahead");
         var $dad = [];
@@ -141,9 +143,10 @@
     });
 </script>
 
-
 </#macro>
-
+<#macro contentLeft>
+    <#include "contentLeft.ftl"/>
+</#macro>
 
 
 

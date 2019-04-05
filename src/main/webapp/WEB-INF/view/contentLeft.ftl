@@ -6,8 +6,6 @@
 <ul class="list-group">
     <li class="list-group-item list-group-item-secondary">Читатель:</li>
 
-
-
         <#if reader?has_content>
             <li class="list-group-item"> ${reader.lastName} ${reader.firstName}</li>
 

@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -24,7 +24,7 @@ public class ReaderController {
             String firstName;
             String lastName;
             String middleName;
-            List<String> list = new LinkedList<>();
+            ArrayList<String> list = new ArrayList<>();
             for (String name : fio.split(" ")) {
                 list.add(name);
             }
