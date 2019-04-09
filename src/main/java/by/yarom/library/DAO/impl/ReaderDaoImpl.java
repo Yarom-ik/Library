@@ -87,21 +87,21 @@ public class ReaderDaoImpl implements ReaderDao {
         Query query = null;
         switch (list.size()){
             case 1: {
-                query = currentSession().createQuery("from Reader c where c.firstName = :name and c.active = true");
-                query.setParameter("name",list.get(0));
+                query = currentSession().createQuery("from Reader c where c.firstName like :name and c.active = true");
+                query.setParameter("name",list.get(0) + "%");
                 break;
             }
             case 2: {
-                query = currentSession().createQuery("from Reader c where c.firstName = :name and c.lastName =:lastName and c.active = true ");
-                query.setParameter("name",list.get(0))
-                        .setParameter("lastName", list.get(1));
+                query = currentSession().createQuery("from Reader c where c.firstName like :name and c.lastName like:lastName and c.active = true ");
+                query.setParameter("name",list.get(0)+ "%")
+                        .setParameter("lastName", list.get(1)+ "%");
                 break;
             }
             case 3: {
-                query = currentSession().createQuery("from Reader c where c.firstName = :name and c.lastName =:lastName and c.middleName =:middleName and c.active = true ");
-                query.setParameter("name",list.get(0))
-                        .setParameter("lastName", list.get(1))
-                        .setParameter("middleName", list.get(2));
+                query = currentSession().createQuery("from Reader c where c.firstName like :name and c.lastName like:lastName and c.middleName like:middleName and c.active = true ");
+                query.setParameter("name",list.get(0)+ "%")
+                        .setParameter("lastName", list.get(1)+ "%")
+                        .setParameter("middleName", list.get(2)+ "%");
                 break;
             }
             default:
@@ -124,21 +124,21 @@ public class ReaderDaoImpl implements ReaderDao {
         Query query = null;
         switch (list.size()){
             case 1: {
-                query = currentSession().createQuery("select count (*) from Reader c where c.firstName = :name and c.active = true");
-                query.setParameter("name",list.get(0));
+                query = currentSession().createQuery("select count (*) from Reader c where c.firstName like :name and c.active = true");
+                query.setParameter("name",list.get(0) +"%");
                 break;
             }
             case 2: {
-                query = currentSession().createQuery("select count (*) from Reader c where c.firstName = :name and c.lastName =:lastName and c.active = true");
-                query.setParameter("name",list.get(0))
-                        .setParameter("lastName", list.get(1));
+                query = currentSession().createQuery("select count (*) from Reader c where c.firstName like :name and c.lastName like:lastName and c.active = true");
+                query.setParameter("name",list.get(0)+"%")
+                        .setParameter("lastName", list.get(1)+"%");
                 break;
             }
             case 3: {
-                query = currentSession().createQuery("select count (*) from Reader c where c.firstName = :name and c.lastName =:lastName and c.middleName =:middleName and c.active = true");
-                query.setParameter("name",list.get(0))
-                        .setParameter("lastName", list.get(1))
-                        .setParameter("middleName", list.get(2));
+                query = currentSession().createQuery("select count (*) from Reader c where c.firstName like :name and c.lastName like:lastName and c.middleName like:middleName and c.active = true");
+                query.setParameter("name",list.get(0)+"%")
+                        .setParameter("lastName", list.get(1)+"%")
+                        .setParameter("middleName", list.get(2)+"%");
                 break;
             }
         }

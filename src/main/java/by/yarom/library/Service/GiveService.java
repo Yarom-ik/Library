@@ -1,8 +1,8 @@
 package by.yarom.library.Service;
 
 import by.yarom.library.Entity.Give;
-import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface GiveService {
@@ -26,5 +26,7 @@ public interface GiveService {
     List<Give> giveListByOrderId(int idOrder, int idReader);
 
     List<Give> giveListByReaderByBooksNotFinished(String firstName, String lastName, String middleName);
+
+    int[] giveStatistic(int year) throws ParseException;
 
 }

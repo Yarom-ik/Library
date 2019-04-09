@@ -8,6 +8,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,5 +85,14 @@ public class GiveDaoImpl implements GiveDao {
                         .list();
 
         return giveListByReaderByBooksNotFinished;
+    }
+
+    @Override
+    public long giveStatistic(Date startDate, Date endDate) {
+        long count = (Long) currentSession().createQuery("select count (*) from Give where order.data between :startDate and :endDate")
+                .setParameter("startDate",  startDate)
+                .setParameter("endDate", endDate)
+                .uniqueResult();
+        return count;
     }
 }

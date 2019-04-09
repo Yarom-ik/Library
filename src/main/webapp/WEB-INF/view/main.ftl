@@ -44,10 +44,10 @@
             padding: 10px; /* Поля вокруг текста */
             overflow: auto;
         }
-        .give {
-            margin-left: 20;
-            overflow: auto;
-        }
+        /*.give {*/
+            /*margin-left: 20;*/
+            /*overflow: auto;*/
+        /*}*/
         /*futer*/
         .footer {
             background-color: #f5f5f5;
@@ -95,7 +95,7 @@
                 </div>
             </li>
             <li class="nav-item ">
-                <a class="nav-link" href="#">Статистика </a>
+                <a class="nav-link" href="/statistic">Статистика </a>
             </li>
 
             <#if isAdmin>

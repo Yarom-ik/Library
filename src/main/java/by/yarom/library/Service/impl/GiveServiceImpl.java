@@ -7,12 +7,13 @@ import by.yarom.library.Entity.CatalogBooks;
 import by.yarom.library.Entity.Give;
 import by.yarom.library.Entity.Order;
 import by.yarom.library.Service.GiveService;
-import by.yarom.library.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -103,5 +104,39 @@ import java.util.List;
     @Override
     public List<Give> giveListByReaderByBooksNotFinished(String firstName, String lastName, String middleName) {
         return giveDao.giveListByReaderByBooksNotFinished(firstName, lastName, middleName);
+    }
+
+    @Override
+    public int[] giveStatistic(int year) throws ParseException {
+
+        Calendar calendar = Calendar.getInstance();
+        System.out.println("текущий месяц "+(calendar.get(Calendar.MONTH)+1)+ " yearNow= "+calendar.get(Calendar.YEAR));
+        int mount = (calendar.get(Calendar.MONTH)+1);
+        int yearNow = (calendar.get(Calendar.YEAR));
+
+        if(year!=yearNow) {
+            mount=12;
+        }
+        int[] masGiveMounth = new int[mount];
+        for (int m = 1; m <= mount; m++) {
+            String startedDate = year + "-" + m + "-01 00:00:00";
+            SimpleDateFormat format = new SimpleDateFormat();
+            format.applyPattern("yyyy-MM-dd HH:mm:ss");
+            Date startDate = format.parse(startedDate);
+            System.out.println("startDate " + startDate);
+
+            Calendar calendarEnd = Calendar.getInstance();
+            calendarEnd.set(Calendar.YEAR, year);
+            calendarEnd.set(Calendar.MONTH, m - 1);
+            String endedDate = year + "-" + m + "-" + calendarEnd.getActualMaximum(Calendar.DAY_OF_MONTH) + " 23:59:59";
+            SimpleDateFormat formatEnd = new SimpleDateFormat();
+            formatEnd.applyPattern("yyyy-MM-dd HH:mm:ss");
+            Date endDate = formatEnd.parse(endedDate);
+            System.out.println("EndDate " + endDate);
+
+            masGiveMounth[m - 1] = (int) giveDao.giveStatistic(startDate, endDate);
+        }
+
+        return masGiveMounth;
     }
 }

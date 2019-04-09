@@ -9,8 +9,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +16,12 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.text.ParseException;
+import java.util.*;
 
 @Controller
 @Scope("request")
@@ -63,6 +60,28 @@ public class LibraryController {
     private ReaderValidator readerValidator;
 
     final static Logger logger = Logger.getLogger(LibraryController.class);
+
+    @RequestMapping ("/statistic")
+    public String statistic(@RequestParam(value = "date", required = false) String date,
+                            Model model) throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        int startYear = 2017;
+        int yearNow = calendar.get(Calendar.YEAR);
+        int[] years = new int[(yearNow-startYear)];
+        for (int i = 0; i<=(yearNow-startYear);i++){
+            years[i]=startYear+=1;
+        }
+        if (date==null){
+
+            model.addAttribute("mountCount", giveService.giveStatistic(yearNow));
+            model.addAttribute("yearNow", yearNow);
+        }else {
+            model.addAttribute("mountCount", giveService.giveStatistic(Integer.parseInt(date)));
+            model.addAttribute("yearNow", Integer.parseInt(date));
+        }
+        model.addAttribute("years",years);
+        return "/statistic";
+    }
 
     @PostMapping(value = "/editPassword")
     public String editPassword(@ModelAttribute ("password") String password,
@@ -421,7 +440,8 @@ public class LibraryController {
 
     @Transactional
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    public String order(Model model) throws Exception{
+    public String order(Model model,
+                        RedirectAttributes redirectAttributes) throws Exception{
 
         Reader reader = readerService.getReaderById(basketBook.getReaderId());
         Order order = new Order();
@@ -466,8 +486,8 @@ public class LibraryController {
         }
             listBasket(model);
             basketBook.deleteAll();
-            model.addAttribute("ok",true);
-        return "/orders";
+            redirectAttributes.addFlashAttribute("ok",true);
+        return "redirect:/orders";
     }
 
     @RequestMapping("/addToReader/{id}")

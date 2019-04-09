@@ -99,7 +99,7 @@
 
 <footer class="footer mt-auto py-3">
     <div class="container" style="width: auto; max-width: fit-content;">
-        <span class="text-muted">Place sticky footer content here.</span>
+        <span class="text-muted">2019 Библиотека УО "ГрГУОР"</span>
     </div>
 </footer>
 
