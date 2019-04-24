@@ -22,17 +22,12 @@ public class Users {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "telephone")
-    private String telephone;
-
     public boolean isAdmin(){
         return role.getName().contains("admin");
+    }
+
+    public boolean isReader(){
+        return role.getName().contains("reader");
     }
 
     public Users() {
@@ -70,30 +65,6 @@ public class Users {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
     @Override
     public String toString() {
         return "Users{" +
@@ -101,9 +72,6 @@ public class Users {
                 ", role=" + role +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", telephone='" + telephone + '\'' +
                 '}';
     }
 }

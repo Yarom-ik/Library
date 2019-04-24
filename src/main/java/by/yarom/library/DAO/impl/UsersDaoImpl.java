@@ -41,6 +41,9 @@ public class UsersDaoImpl implements UsersDao {
 
     @Override
     public void deleteUser(int id) {
+        currentSession().createQuery("DELETE Users where idUser =:idUser")
+                .setParameter("idUser", id)
+                .executeUpdate();
     }
 
     @Override

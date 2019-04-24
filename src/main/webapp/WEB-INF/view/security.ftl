@@ -7,6 +7,8 @@ known = Session.SPRING_SECURITY_CONTEXT??
     users = Session.SPRING_SECURITY_CONTEXT.authentication.principal
     nameUserLogin = users.getLogin()
     isAdmin = users.isAdmin()
+    isReader = users.isAdmin()
+
     >
 <#else>
     <#assign

@@ -48,11 +48,79 @@
                 });
             </script>
         </form>
-
     </div>
 </div>
 
 <#if error?has_content>${error}</#if>
+<br>
+<div class="card">
+    <h6 class="card-header">Управление пользователями</h6>
+    <div class="card-body">
+        <form method="get" action="/admin">
+            <table class="table table-hover table-sm">
+                <thead class="thead-light">
+                <tr>
+                    <th ></th>
+                    <th >Логин</th>
+                    <th >Пароль</th>
+                    <th >Роль</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <#list usersAndRole as user>
+                    <tr>
+                        <td>
+                            <#--<a class="btn btn-outline-info btn-sm btn-table " role="button" href="/admin/#{user.idUser}" data-toggle="tooltip" data-placement="top" title="Редактировать пользователя"><img src="/resources/image/edit.png"></a>-->
+                            <a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-id="#{user.idUser}" data-target="#exampleModalDelete" >
+                                <span class="tags"  data-toggle="tooltip"  data-placement="top" title="Удалить пользователя">
+                                <img src="/resources/image/delete.png">
+                                </span>
+                            </a>
+                        </td>
+                        <td > ${user.login}</td>
+                        <td>${user.password}</td>
+                        <td>${user.role.name}</td>
+
+                    </tr>
+                    </#list>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $('#exampleModalDelete').on('show.bs.modal', function(e) {
+        var idUser = $(e.relatedTarget).data('id');
+
+        $(e.currentTarget).find('input[name="id_User"]').val(idUser);
+    });
+</script>
+<!-- Modal delete -->
+<form method="get" action="/admin/del/">
+    <div class="modal fade" id="exampleModalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Удаление пользователя</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h6>Вы действительно хотите удалить этого пользователя?</h6>
+                    <input type="hidden" name="id_User" class="form-control" aria-describedby="basic-addon1" >
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                    <button type="submit" class="btn btn-primary">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 </#macro>
 <#macro contentLeft>
 <br>
@@ -65,3 +133,6 @@
 
 </ul>
 </#macro>
+
+
+
