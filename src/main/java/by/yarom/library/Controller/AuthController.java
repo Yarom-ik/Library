@@ -2,9 +2,11 @@ package by.yarom.library.Controller;
 
 
 import by.yarom.library.Entity.CatalogBooks;
+import by.yarom.library.Entity.Reader;
 import by.yarom.library.Entity.Users;
 import by.yarom.library.Service.RoleService;
 import by.yarom.library.Service.UsersService;
+import by.yarom.library.validator.ReaderValidator;
 import by.yarom.library.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,6 +32,10 @@ public class AuthController {
     @Autowired
     @Qualifier(value = "userValidator")
     private UserValidator userValidator;
+
+    @Autowired
+    @Qualifier(value = "readerValidator")
+    private ReaderValidator readerValidator;
 
     @RequestMapping("/editPassword")
     public String editPass(){
@@ -49,10 +56,18 @@ public class AuthController {
     }
 
     @PostMapping("/sign_up")
-    public String signUp(@ModelAttribute Users user, BindingResult result) {
-        userValidator.validate(user, result);
-        System.out.println(result.getAllErrors());
-        if (result.hasErrors()) {
+    public String signUp(@ModelAttribute @Valid Users user, BindingResult bindingResultUser,
+                         @ModelAttribute @Valid Reader reader, BindingResult bindingResultReader,
+                         Model model) {
+        userValidator.validate(user, bindingResultUser);
+        readerValidator.validate(reader, bindingResultReader);
+        System.out.println(bindingResultUser.getAllErrors());
+        if (bindingResultUser.hasErrors() || bindingResultReader.hasErrors()){
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResultUser);
+            errorsMap.putAll(ControllerUtils.getErrors(bindingResultReader));
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("userNew",user);
+            model.addAttribute("readerNew", reader);
             return "/sign_up";
         }
 

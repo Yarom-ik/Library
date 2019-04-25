@@ -51,7 +51,7 @@
                     <span class="input-group-text" id="inputGroup-sizing-default">Телефон</span>
                 </div>
                 <input type="text" class="form-control ${(telephoneError??)?string('is-invalid', '')}" placeholder="Введите телефон"
-                       name="telephone"  id="index" value="<#if readerNew??>${readerNew.telephone}</#if>" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                       name="telephone"  id="index" value="<#if readerNew??>${readerNew.telephone}</#if>" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 <#if telephoneError??>
                     <div class="invalid-feedback">
                     ${telephoneError}

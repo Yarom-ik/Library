@@ -12,6 +12,9 @@ public class Users {
     @Column(name = "id_user")
     private int idUser;
 
+    @OneToOne(mappedBy = "users")
+    private Reader reader;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
@@ -22,12 +25,19 @@ public class Users {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "email")
+    private String email;
+
     public boolean isAdmin(){
         return role.getName().contains("admin");
     }
 
     public boolean isReader(){
         return role.getName().contains("reader");
+    }
+
+    public boolean isLibrary(){
+        return role.getName().contains("library");
     }
 
     public Users() {
@@ -65,6 +75,23 @@ public class Users {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
+    }
+
     @Override
     public String toString() {
         return "Users{" +
@@ -72,6 +99,7 @@ public class Users {
                 ", role=" + role +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

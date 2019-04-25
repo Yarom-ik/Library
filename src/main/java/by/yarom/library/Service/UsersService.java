@@ -14,5 +14,7 @@ public interface UsersService {
 
      Users getUserByLogin(String login);
 
+     Users getUserByEmail(String email);
+
      List<Users> listUsers();
 }

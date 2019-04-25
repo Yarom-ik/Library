@@ -33,6 +33,10 @@ public class Reader {
     @Column(name = "telephone")
     private String telephone;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id_user")
+    private Users users;
+
     @Column(name = "active")
     private boolean active;
 
@@ -96,6 +100,14 @@ public class Reader {
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
     @Override

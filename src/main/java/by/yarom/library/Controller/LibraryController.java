@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import java.util.*;
 
 @Controller
 @Scope("request")
+@PreAuthorize("hasAuthority('admin') or hasAuthority('library')")
 public class LibraryController {
 
     @Autowired
@@ -506,7 +508,7 @@ public class LibraryController {
     }
 
     @GetMapping("/books")
-    //@PreAuthorize("hasRole('yarom')")
+    @PreAuthorize("hasAuthority('reader') or hasAuthority('library') or hasAuthority('admin')")
     public String getUsers(@RequestParam(value = "action", required = false)  String action,
                            @RequestParam(value = "find", required = false) String find,
                            @RequestParam(value = "param", required = false) String param,

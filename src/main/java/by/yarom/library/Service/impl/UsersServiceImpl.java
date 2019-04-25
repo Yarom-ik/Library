@@ -43,6 +43,11 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public Users getUserByEmail(String email) {
+        return usersDao.getUserByEmail(email);
+    }
+
+    @Override
     public List<Users> listUsers() {
         return usersDao.listUsers();
     }

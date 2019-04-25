@@ -51,7 +51,7 @@
 
             <button class="btn btn-lg btn-success btn-block" type="submit">Войти</button>
             <#--<button class="btn btn-lg btn-primary btn-block" type="submit">Проверить задолженность</button>-->
-            <a href="/checkReadersBooks" data-turbolinks="false" class="btn btn-lg btn-primary btn-block" role="button" >Проверить задолженность</a>
+            <a href="/sign_up" data-turbolinks="false" class="btn btn-lg btn-primary btn-block" role="button" >Загеристрироваться</a>
             <p class="mt-5 mb-3 text-muted text-center">&copy; 2019</p>
         </form>
 

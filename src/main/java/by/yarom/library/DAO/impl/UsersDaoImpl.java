@@ -53,10 +53,14 @@ public class UsersDaoImpl implements UsersDao {
                 .uniqueResult();
 
         return users;
+    }
 
-
-       // System.out.println((Users) currentSession().createQuery("from Users where id = 7").uniqueResult());
-        //return (Users) userCriteria.uniqueResult();
+    @Override
+    public Users getUserByEmail(String email) {
+        Users users = (Users) currentSession().createQuery("from Users u where u.email =:email")
+                .setParameter("email",email)
+                .uniqueResult();
+        return users;
     }
 
     @Override

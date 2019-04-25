@@ -11,4 +11,9 @@ public class MainController {
         return "/error";
     }
 
+    @RequestMapping(value = "/errorAccess")
+    public String errorAccess(){
+        return "/errorAccess";
+    }
+
 }

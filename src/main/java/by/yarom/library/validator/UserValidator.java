@@ -27,7 +27,11 @@ public class UserValidator implements Validator {
     public void validate(@Nullable Object o, Errors errors) {
         Users users = (Users) o;
         if (usersService.getUserByLogin(users.getLogin()) != null){
-            errors.rejectValue("login","","Это имя уже есть!");
+            errors.rejectValue("login","","Этот логин уже используется!");
+        }
+
+        if (usersService.getUserByEmail(users.getEmail()) != null){
+            errors.rejectValue("email","","Этот email уже используется!");
         }
 
     }

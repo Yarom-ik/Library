@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan("by.yarom.library.Security")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -29,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/books").authenticated()
 //                .antMatchers("/orders").hasAuthority("User")
                 .antMatchers("/admin/**").access("hasAuthority('admin')")
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
                 .and().csrf().disable()
                 .formLogin()
                 .loginPage("/login")
@@ -39,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/books")
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/error")
+                .accessDeniedPage("/errorAccess")
                 .and().logout()
                 .invalidateHttpSession(true);;
 

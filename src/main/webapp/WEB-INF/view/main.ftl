@@ -6,7 +6,8 @@
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS, js -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <#--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
     <!--Turbolinks-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js"></script>
 
@@ -75,9 +76,11 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+            <#if isReader || isAdmin>
             <li class="nav-item">
                 <a class="nav-link" href="/books">Каталог книг </a>
             </li>
+            </#if>
             <li class="nav-item ">
                 <a class="nav-link" href="/orders">Выдача книг </a>
             </li>
@@ -101,6 +104,11 @@
             <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/admin">Панель администратора</a>
+                </li>
+            </#if>
+            <#if isReader>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">ggg</a>
                 </li>
             </#if>
 
