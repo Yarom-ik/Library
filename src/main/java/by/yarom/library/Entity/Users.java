@@ -1,6 +1,7 @@
 package by.yarom.library.Entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -19,12 +20,15 @@ public class Users {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @Size(min = 1, max = 45, message = "Слишком длинный логин (max45 символов)")
     @Column(name = "login")
     private String login;
 
+    @Size(min = 1, max = 45, message = "Слишком длинный пароль (max45 символов)")
     @Column(name = "password")
     private String password;
 
+    @Size(min = 1, max = 45, message = "Слишком длинный email (max45 символов)")
     @Column(name = "email")
     private String email;
 

@@ -93,4 +93,9 @@ public class ReaderServiceImpl implements ReaderService{
     public Long countFindReaderByOwes() {
         return readerDao.countFindReaderByOwes();
     }
+
+    @Override
+    public Reader getReaderByFIO(String firsName, String lastName, String middleName) {
+        return readerDao.getReaderByFIO(firsName, lastName, middleName);
+    }
 }

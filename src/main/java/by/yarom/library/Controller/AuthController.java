@@ -4,6 +4,7 @@ package by.yarom.library.Controller;
 import by.yarom.library.Entity.CatalogBooks;
 import by.yarom.library.Entity.Reader;
 import by.yarom.library.Entity.Users;
+import by.yarom.library.Service.ReaderService;
 import by.yarom.library.Service.RoleService;
 import by.yarom.library.Service.UsersService;
 import by.yarom.library.validator.ReaderValidator;
@@ -11,6 +12,7 @@ import by.yarom.library.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,9 @@ public class AuthController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private ReaderService readerService;
 
     @Autowired
     @Qualifier(value = "userValidator")
@@ -55,12 +60,13 @@ public class AuthController {
         return "/sign_up";
     }
 
+    @Transactional
     @PostMapping("/sign_up")
     public String signUp(@ModelAttribute @Valid Users user, BindingResult bindingResultUser,
                          @ModelAttribute @Valid Reader reader, BindingResult bindingResultReader,
                          Model model) {
         userValidator.validate(user, bindingResultUser);
-        readerValidator.validate(reader, bindingResultReader);
+//        readerValidator.validate(reader, bindingResultReader);
         System.out.println(bindingResultUser.getAllErrors());
         if (bindingResultUser.hasErrors() || bindingResultReader.hasErrors()){
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResultUser);
@@ -70,10 +76,32 @@ public class AuthController {
             model.addAttribute("readerNew", reader);
             return "/sign_up";
         }
+        model.addAttribute("userNew",user);
+        model.addAttribute("readerNew", reader);
+        Reader readerInBase = readerService.getReaderByFIO(reader.getFirstName(), reader.getLastName(), reader.getMiddleName());
+        if (readerInBase != null && readerInBase.getUsers() == null ){
+            user.setRole(roleService.getRoleById(3));
+            readerInBase.setActive(true);
+            readerInBase.setUsers(user);
+            usersService.addUser(user);
+            readerService.updateReader(readerInBase);
+            model.addAttribute("registationMessage", "Регистрация прошла успешно");
+            return "/sign_up";
+        }
+        if (readerInBase != null && readerInBase.getUsers().getLogin() != null) {
+            model.addAttribute("registationMessage", "Вы уже зарегистрированы в системе");
+            return "/sign_up";
+        }else {
+            user.setRole(roleService.getRoleById(3));
+            reader.setActive(true);
+            reader.setUsers(user);
+            usersService.addUser(user);
+            readerService.addReader(reader);
+            model.addAttribute("registationMessage", "Регистрация прошла успешно");
+            return "/sign_up";
 
-        user.setRole(roleService.getRoleById(2));
-        usersService.addUser(user);
-        return "redirect:/users";
+        }
+
     }
 
     @RequestMapping("/login")

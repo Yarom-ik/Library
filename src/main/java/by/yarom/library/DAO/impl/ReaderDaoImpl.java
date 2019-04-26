@@ -199,4 +199,17 @@ public class ReaderDaoImpl implements ReaderDao {
         List list = currentSession().createQuery("select r from Reader r join fetch r.orders as rr where rr.finished = false and r.active = true group by r").list();
         return Long.valueOf(list.size());
     }
+
+    @Override
+    public Reader getReaderByFIO(String firsName, String lastName, String middleName) {
+        Reader reader = (Reader) currentSession().createQuery("from Reader r where r.firstName =:firstName and r.lastName =:lastName and r.middleName =:middleName")
+                .setParameter("firstName", firsName)
+                .setParameter("lastName", lastName)
+                .setParameter("middleName", middleName)
+                .setMaxResults(1)
+                .uniqueResult();
+
+
+        return reader;
+    }
 }

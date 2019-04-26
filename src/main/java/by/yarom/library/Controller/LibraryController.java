@@ -85,13 +85,13 @@ public class LibraryController {
         return "/statistic";
     }
 
+    @PreAuthorize("hasAuthority('reader') or hasAuthority('library') or hasAuthority('admin')")
     @PostMapping(value = "/editPassword")
     public String editPassword(@ModelAttribute ("password") String password,
                                @ModelAttribute ("passwordNew") String passwordNew,
                                @ModelAttribute ("login") String login,
                                Model model){
         Users users = usersService.getUserByLogin(login);
-        System.out.println(password);
         if (!password.equals(users.getPassword())) {
             model.addAttribute("errorVerificatePass",true);
             model.addAttribute("password",password);

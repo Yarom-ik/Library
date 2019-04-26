@@ -36,4 +36,6 @@ public interface ReaderService {
     List<Reader> listReaderByOwes(Integer page);
 
     Long countFindReaderByOwes();
+
+    Reader getReaderByFIO(String firsName, String lastName, String middleName);
 }

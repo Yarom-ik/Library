@@ -37,6 +37,12 @@
                 <p>Для регистрации введите следующие данные </p>
             </div>
 
+        <#if registationMessage?has_content>
+            <div class="alert alert-info" role="alert">
+            ${registationMessage} <a href="/">Войти</a>
+            </div>
+        </#if>
+
             <div class="form-label-group">
                 <input type="text" name="login" id="exampleInputLogin" class="form-control ${(loginError??)?string('is-invalid', '')}"
                        value="<#if userNew??>${userNew.login}</#if>" placeholder="Введите логин" required autofocus>
@@ -117,14 +123,10 @@
                 });
             </script>
 
-        <#if RegistationOK??>
-        <div class="alert alert-success" role="alert">
-            Регистрация прошла успешно! <a href="/">Войти</a>
-        </div>
-        </#if>
+
 
             <button class="btn btn-lg btn-success btn-block" type="submit">Зарегистрироваться</button>
-            <#--<button class="btn btn-lg btn-primary btn-block" type="submit">Проверить задолженность</button>-->
+            <a class="btn btn-lg btn-primary btn-block" href="/" role="button">Отмена</a>
 
             <p class="mt-5 mb-3 text-muted text-center">&copy; 2019</p>
         </form>

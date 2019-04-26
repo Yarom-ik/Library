@@ -82,7 +82,9 @@
             <table class="table table-hover table-sm">
                 <thead class="thead-light">
                     <tr>
+                        <#if isAdmin || isLibrary>
                         <th ></th>
+                        </#if>
                         <th >Название</th>
                         <th >Автор</th>
                         <th >Категория</th>
@@ -94,10 +96,12 @@
                     <#list books as book>
                         <#--<tr onclick="window.location='/bookInfo/${book.id}'">-->
                         <tr>
+                            <#if isAdmin || isLibrary>
                             <td>
                                 <a class="btn btn-outline-info btn-sm btn-table " role="button" href="/bookInfo/#{book.id}" data-toggle="tooltip" data-placement="top" title="Полная иформация о книге"><img src="/resources/image/lupa.png"></a>
                                 <a class="btn btn-outline-info btn-sm btn-table " role="button"  href="/addToOrder/#{book.id}"data-toggle="tooltip" data-placement="top" title="Добавить к выдаче"><img src="/resources/image/ryka.png"></a>
                             </td>
+                                </#if>
                             <td > ${book.name}</a></td>
                             <td><a role="button" href="/books?find=${book.author.authorName}&param=author" style="color: black" >${book.author.authorName}</a></td>
                             <td><a role="button" href="/books?find=${book.category.categoryName}&param=category" style="color: black" >${book.category.categoryName}</a></td>
@@ -160,7 +164,11 @@
 
 </#macro>
 <#macro contentLeft>
+    <#if isAdmin || isLibrary>
     <#include "contentLeft.ftl"/>
+    <#else >
+        <#include "readers/contentLeftReader.ftl"/>
+    </#if>
 </#macro>
 
 

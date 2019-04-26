@@ -31,7 +31,7 @@
             <div class="text-center mb-4">
                 <img class="mb-4" src="/resources/image/logo.png" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 font-weight-normal">Библиотека "ГрГУОР"</h1>
-                <p>Для входа в систему введите логин и пароль, если требуется проверить задолженность по книгам - нажмите проверить задолженность </p>
+                <p>Для входа в систему введите логин и пароль, <a href="#"> забыли пароль?</a> </p>
             </div>
 
             <div class="form-label-group">

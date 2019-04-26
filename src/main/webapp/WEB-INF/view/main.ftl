@@ -76,11 +76,12 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <#if isReader || isAdmin>
+            <#if isReader || isAdmin || isLibrary>
             <li class="nav-item">
                 <a class="nav-link" href="/books">Каталог книг </a>
             </li>
             </#if>
+            <#if isAdmin || isLibrary>
             <li class="nav-item ">
                 <a class="nav-link" href="/orders">Выдача книг </a>
             </li>
@@ -100,7 +101,7 @@
             <li class="nav-item ">
                 <a class="nav-link" href="/statistic">Статистика </a>
             </li>
-
+            </#if>
             <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/admin">Панель администратора</a>
@@ -108,7 +109,7 @@
             </#if>
             <#if isReader>
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin">ggg</a>
+                    <a class="nav-link" href="/checkReadersBooks">Взятые книги</a>
                 </li>
             </#if>
 

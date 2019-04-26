@@ -33,7 +33,7 @@ public class Reader {
     @Column(name = "telephone")
     private String telephone;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id_user")
     private Users users;
 

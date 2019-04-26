@@ -36,5 +36,7 @@ public interface ReaderDao {
 
     Long countFindReaderByOwes();
 
+    Reader getReaderByFIO(String firsName, String lastName, String middleName);
+
 
 }
