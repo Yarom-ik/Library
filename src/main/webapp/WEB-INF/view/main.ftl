@@ -120,7 +120,7 @@
             <a class="nav-item nav-link dropdown-toggle mr-md-2" style="color: #a4a4a4" href="#"  data-toggle="dropdown"> <img src="/resources/image/profle.png">
                 ${nameUserLogin}</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                <a class="dropdown-item btn" href="/editPassword"> Изменить пароль</a>
+                <a class="dropdown-item btn" href="/account"> Мой аккаунт</a>
              </div>
         </div>
         <a href="/logout" class="btn btn-outline-secondary btn-sm" tabindex="-1" role="button" aria-disabled="true">Выход</a>

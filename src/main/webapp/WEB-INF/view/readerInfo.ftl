@@ -18,6 +18,12 @@
         <td>
             <a class="btn btn-outline-info btn-sm btn-table " role="button"  href="/addToReader/#{readerId.idReader}" data-toggle="tooltip" data-placement="top" title="Выбрать к выдаче"><img src="/resources/image/ryka.png"></a>
         <#--<a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-target="#exampleModalDelete" data-toggle="tooltip" data-placement="top" title="Удалить читателя"><img src="/resources/image/delete.png"></a>-->
+            <a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-target="#modalEdit" data-id="#{readerId.idReader}" data-first="${readerId.firstName}"
+               data-last="${readerId.lastName}" data-middle="${readerId.middleName}" data-telephone="${readerId.telephone}">
+                <span class="tags"  data-toggle="tooltip"   data-placement="top" title="Редатировать читателя">
+                <img src="/resources/image/edit.png">
+                </span>
+            </a>
             <a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-target="#exampleModalDelete" >
                 <span class="tags"  data-toggle="tooltip"   data-placement="top" title="Удалить читателя">
                 <img src="/resources/image/delete.png">
@@ -88,6 +94,89 @@
         </form>
     </div>
     </#if>
+
+<!-- Modal Edit -->
+<form method="get" action="/readerEdit">
+    <div class="modal" id="modalEdit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Изменение читателя</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Фамилия:</span>
+                        </div>
+                        <input type="hidden" name="idReader" class="form-control" aria-describedby="basic-addon1" >
+                        <input type="text" name="firstName" class="form-control" aria-describedby="basic-addon1" required>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Имя:</span>
+                        </div>
+                        <input type="text" name="lastName" class="form-control" aria-describedby="basic-addon1" required>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Отчество:</span>
+                        </div>
+                        <input type="text" name="middleName" class="form-control" aria-describedby="basic-addon1" required>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Телефон:</span>
+                        </div>
+                        <input type="text" name="telephone" id="index" class="form-control" aria-describedby="basic-addon1" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Изменить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $('#modalEdit').on('show.bs.modal', function(e) {
+        var readerId = $(e.relatedTarget).data('id');
+        var firstName = $(e.relatedTarget).data('first');
+        var lastName = $(e.relatedTarget).data('last');
+        var middleName = $(e.relatedTarget).data('middle');
+        var telephone = $(e.relatedTarget).data('telephone');
+
+        $(e.currentTarget).find('input[name="firstName"]').val(firstName);
+        $(e.currentTarget).find('input[name="idReader"]').val(readerId);
+        $(e.currentTarget).find('input[name="lastName"]').val(lastName);
+        $(e.currentTarget).find('input[name="middleName"]').val(middleName);
+        $(e.currentTarget).find('input[name="telephone"]').val(telephone);
+    });
+
+    //    запрет ввода пробелов
+    $('input').keyup(function(){
+        str = $(this).val()
+        str = str.replace(/\s/g,'')
+        $(this).val(str)
+    });
+    $(function() {
+        //задание масски ввода телефона
+        $("#index").mask("375(99)999-99-99");
+
+    });
+</script>
+
+
 <!-- Modal Delete-->
 <div class="modal fade" id="exampleModalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -108,6 +197,7 @@
         </div>
     </div>
 </div>
+
 </#macro>
 
 <#macro contentLeft>

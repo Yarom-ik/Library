@@ -90,6 +90,7 @@ public class LibraryController {
     public String editPassword(@ModelAttribute ("password") String password,
                                @ModelAttribute ("passwordNew") String passwordNew,
                                @ModelAttribute ("login") String login,
+                               @AuthenticationPrincipal Users user,
                                Model model){
         Users users = usersService.getUserByLogin(login);
         if (!password.equals(users.getPassword())) {
@@ -101,8 +102,8 @@ public class LibraryController {
             usersService.updateUser(users);
             model.addAttribute("editPasswordOkk", true);
         }
-        listBasket(model);
-        return "/editPassword";
+        model.addAttribute("userAccount", usersService.getUserByLogin(user.getLogin()));
+        return "/account";
     }
 
     @RequestMapping("/deleteReader/{id}")
@@ -183,6 +184,16 @@ public class LibraryController {
         listBasket(model);
         model.addAttribute("categoryes", categoryService.categoryList());
         return "/categoryes";
+    }
+
+    @GetMapping("/readerEdit")
+    public String readerEdit(@ModelAttribute Reader reader,
+                             @AuthenticationPrincipal Users users){
+        Users user = usersService.getUserByLogin(users.getLogin());
+        reader.setActive(true);
+        reader.setUsers(user);
+        readerService.updateReader(reader);
+        return "redirect:/readerInfo/"+reader.getIdReader();
     }
 
     @RequestMapping("/readerInfo/{id}")
@@ -495,7 +506,12 @@ public class LibraryController {
     @RequestMapping("/addToReader/{id}")
     public String addToReader(@ModelAttribute("id") int id,
                               HttpServletRequest request){
-        basketBook.setReaderId(id);
+        if (basketBook.getReaderId() == 0){
+            basketBook.setReaderId(id);
+        }else {
+            basketBook.deleteAll();
+            basketBook.setReaderId(id);
+        }
         return "redirect:" + request.getHeader("referer");
     }
 

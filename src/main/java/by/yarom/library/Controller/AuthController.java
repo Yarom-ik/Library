@@ -1,16 +1,15 @@
 package by.yarom.library.Controller;
 
 
-import by.yarom.library.Entity.CatalogBooks;
 import by.yarom.library.Entity.Reader;
 import by.yarom.library.Entity.Users;
 import by.yarom.library.Service.ReaderService;
 import by.yarom.library.Service.RoleService;
 import by.yarom.library.Service.UsersService;
-import by.yarom.library.validator.ReaderValidator;
 import by.yarom.library.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -18,8 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Controller
@@ -38,14 +35,37 @@ public class AuthController {
     @Qualifier(value = "userValidator")
     private UserValidator userValidator;
 
-    @Autowired
-    @Qualifier(value = "readerValidator")
-    private ReaderValidator readerValidator;
+    @RequestMapping("/account")
+    public String editPass(Model model,
+                           @AuthenticationPrincipal Users user){
 
-    @RequestMapping("/editPassword")
-    public String editPass(){
+        model.addAttribute("userAccount", usersService.getUserByLogin(user.getLogin()));
 
-        return "/editPassword";
+        return "/account";
+    }
+
+    @PostMapping(value = "/editProfile")
+    public String editProfile(@ModelAttribute @Valid Users userNew,
+                              BindingResult bindingResult,
+                              @ModelAttribute ("login") String login,
+                              Model model){
+
+        Users oldUser = usersService.getUserByLogin(login);
+        if (usersService.getUserByEmail(userNew.getEmail()) != null){
+            bindingResult.rejectValue("email","","Этот email уже используется!");
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            errorsMap.putAll(ControllerUtils.getErrors(bindingResult));
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("userProfile", userNew);
+        }else {
+
+            oldUser.setEmail(userNew.getEmail());
+            usersService.updateUser(oldUser);
+            model.addAttribute("editPasswordOkk", true);
+        }
+        model.addAttribute("userAccount", oldUser);
+
+        return "/account";
     }
 
     @GetMapping("/")
@@ -66,7 +86,6 @@ public class AuthController {
                          @ModelAttribute @Valid Reader reader, BindingResult bindingResultReader,
                          Model model) {
         userValidator.validate(user, bindingResultUser);
-//        readerValidator.validate(reader, bindingResultReader);
         System.out.println(bindingResultUser.getAllErrors());
         if (bindingResultUser.hasErrors() || bindingResultReader.hasErrors()){
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResultUser);
@@ -101,7 +120,6 @@ public class AuthController {
             return "/sign_up";
 
         }
-
     }
 
     @RequestMapping("/login")

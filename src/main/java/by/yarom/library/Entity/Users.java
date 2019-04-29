@@ -13,7 +13,7 @@ public class Users {
     @Column(name = "id_user")
     private int idUser;
 
-    @OneToOne(mappedBy = "users")
+    @OneToOne(mappedBy = "users", fetch = FetchType.EAGER)
     private Reader reader;
 
     @ManyToOne(fetch = FetchType.EAGER)
