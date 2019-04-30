@@ -187,12 +187,15 @@ public class LibraryController {
     }
 
     @GetMapping("/readerEdit")
-    public String readerEdit(@ModelAttribute Reader reader,
-                             @AuthenticationPrincipal Users users){
-        Users user = usersService.getUserByLogin(users.getLogin());
-        reader.setActive(true);
-        reader.setUsers(user);
-        readerService.updateReader(reader);
+    public String readerEdit(@ModelAttribute Reader reader){
+        Reader readerOld = readerService.getReaderById(reader.getIdReader());
+        readerOld.setActive(true);
+        readerOld.setFirstName(reader.getFirstName());
+        readerOld.setMiddleName(reader.getMiddleName());
+        readerOld.setLastName(reader.getLastName());
+        readerOld.setTelephone(reader.getTelephone());
+
+        readerService.updateReader(readerOld);
         return "redirect:/readerInfo/"+reader.getIdReader();
     }
 

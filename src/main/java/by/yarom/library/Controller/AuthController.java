@@ -6,6 +6,7 @@ import by.yarom.library.Entity.Users;
 import by.yarom.library.Service.ReaderService;
 import by.yarom.library.Service.RoleService;
 import by.yarom.library.Service.UsersService;
+import by.yarom.library.Service.impl.MailSender;
 import by.yarom.library.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,8 +33,44 @@ public class AuthController {
     private ReaderService readerService;
 
     @Autowired
+    private MailSender mailSender;
+
+    @Autowired
     @Qualifier(value = "userValidator")
     private UserValidator userValidator;
+
+    @PostMapping("/sendEmail")
+    public String removePassword(@ModelAttribute ("login") @Valid  Users userNew,
+                                 BindingResult bindingResult,
+                                 Model model){
+        Users user = usersService.getUserByLogin(userNew.getLogin());
+        if (user != null) {
+            mailSender.send(user.getEmail(),"Восстановление пароля", "Ваш пароль для доступа к сайту " +
+                    "библиотеки УО ГрГУОР: "+ user.getPassword() );
+            model.addAttribute("registationMessage", "Письмо успешно отправлено на " +user.getEmail());
+        } else {
+            if (bindingResult.hasErrors()) {
+                Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+                errorsMap.putAll(ControllerUtils.getErrors(bindingResult));
+                model.mergeAttributes(errorsMap);
+                model.addAttribute("login", userNew.getLogin());
+                return "/sendEmail";
+            }
+
+            bindingResult.rejectValue("login", "", "Такой логин не существует");
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            errorsMap.putAll(ControllerUtils.getErrors(bindingResult));
+            model.mergeAttributes(errorsMap);
+        }
+        model.addAttribute("login", userNew.getLogin());
+        return "/sendEmail";
+    }
+
+    @RequestMapping(value = "/sendEmail", method = RequestMethod.GET)
+    public String sendEamil(){
+
+        return "/sendEmail";
+    }
 
     @RequestMapping("/account")
     public String editPass(Model model,

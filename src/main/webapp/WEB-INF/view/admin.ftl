@@ -6,7 +6,8 @@
 <div class="card">
     <h6 class="card-header">Резервное копирование</h6>
     <div class="card-body">
-        <h6 class="card-title">Скачать резервную копию:</h6>
+        <div class="row p-3">
+        <#--<h6 class="card-title">Скачать резервную копию:</h6>-->
         <form action="/backup" method="post">
             <button type="submit" class="btn btn-primary">Сделать резервную копию</button>
         </form>
@@ -27,11 +28,11 @@
             </div>
         </#if>
 
-        <h6 class="card-title">Востановить из резервной копии:</h6>
+        <#--<h6 class="card-title">Востановить из резервной копии:</h6>-->
         <form method="post" action="/admin" enctype="multipart/form-data">
-            <div class="input-group col-md-5">
+            <div class="input-group col-md-11">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroupFileAddon01">Файл:</span>
+                    <span class="input-group-text" id="inputGroupFileAddon01">Востановить из резервной копии:</span>
                 </div>
                 <div class="custom-file">
                     <input type="file" name="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" required>
@@ -48,6 +49,7 @@
                 });
             </script>
         </form>
+        </div>
     </div>
 </div>
 
@@ -64,6 +66,7 @@
                     <th >Логин</th>
                     <th >Пароль</th>
                     <th >Роль</th>
+                    <th >ФИО</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -71,7 +74,14 @@
                     <tr>
                         <td>
                             <#--<a class="btn btn-outline-info btn-sm btn-table " role="button" href="/admin/#{user.idUser}" data-toggle="tooltip" data-placement="top" title="Редактировать пользователя"><img src="/resources/image/edit.png"></a>-->
-                            <a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-id="#{user.idUser}" data-target="#exampleModalDelete" >
+                                <a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-target="#userEdit"
+                                   data-user="${user.login}" data-roleuser="${user.getRole().name}" >
+                                <span class="tags"  data-toggle="tooltip"  data-placement="top" title="Редактировать пользователя">
+                                <img src="/resources/image/edit.png">
+                                </span>
+                                </a>
+
+                                <a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-id="#{user.idUser}" data-target="#exampleModalDelete" >
                                 <span class="tags"  data-toggle="tooltip"  data-placement="top" title="Удалить пользователя">
                                 <img src="/resources/image/delete.png">
                                 </span>
@@ -80,7 +90,7 @@
                         <td > ${user.login}</td>
                         <td>${user.password}</td>
                         <td>${user.role.name}</td>
-
+                        <td>${user.getReader().firstName + " "+ user.getReader().lastName  + " "+ user.getReader().middleName} </td>
                     </tr>
                     </#list>
                 </tbody>
@@ -96,7 +106,70 @@
 
         $(e.currentTarget).find('input[name="id_User"]').val(idUser);
     });
+
 </script>
+<script>
+    $('#userEdit').on('show.bs.modal', function(e) {
+        var user = $(e.relatedTarget).data('user');
+        var role = $(e.relatedTarget).data('roleuser');
+
+        $(e.currentTarget).find('input[name="login"]').val(user);
+        $(e.currentTarget).find('input[name="role"]').val(role);
+    });
+</script>
+
+<!-- Modal Edit -->
+<form method="post" action="/admin/edit">
+    <div class="modal" id="userEdit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Изменение роли</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Логин:</span>
+                        </div>
+                        <input type="text" name="login" readonly class="form-control" aria-describedby="basic-addon1" >
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Текущая роль:</span>
+                        </div>
+                        <input type="text" name="role" class="form-control" readonly aria-describedby="basic-addon1" required>
+                    </div>
+
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Новая роль</label>
+                        </div>
+                        <select class="custom-select" name="idRole"  id="inputGroupSelect01" required>
+                            <option selected>Выберите...</option>
+                            <option  value="1">admin</option>
+                            <option  value="2">library</option>
+                            <option  value="3">reader</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Изменить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
 <!-- Modal delete -->
 <form method="get" action="/admin/del/">
     <div class="modal fade" id="exampleModalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

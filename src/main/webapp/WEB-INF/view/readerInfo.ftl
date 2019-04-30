@@ -29,6 +29,14 @@
                 <img src="/resources/image/delete.png">
                 </span>
             </a>
+            <#if readerId.users?has_content>
+            <a class="btn btn-outline-info btn-sm btn-table " role="button" >
+                <span class="tags"  data-toggle="tooltip"   data-placement="top" title="Читаель зарегистрирован в системе">
+                <img src="/resources/image/profle.png">
+                </span>
+            </a>
+            </#if>
+
         </td>
         <td > ${readerId.firstName}</a></td>
         <td>${readerId.lastName}</td>
@@ -66,14 +74,14 @@
                                 <#--<tr >-->
                                     <#if give.finished == false>
                                     <tr class="table-danger">
-                                        <td><a href="/readerInfo/#{readerId.idReader}?action=#{idOrd}&returnBookId=#{give.idGive}&returnBook=true" class="btn btn-outline-danger btn-sm btn-table" id="order" data-toggle="tooltip" data-placement="top" title="Книга возвращена"><img src="/resources/image/cancel.png"></a></td>
+                                        <td><a href="/readerInfo/#{readerId.idReader}?action=#{idOrd}&returnBookId=#{give.idGive}&returnBook=true" class="btn btn-outline-danger btn-sm btn-table" id="order" data-toggle="tooltip" data-placement="top" title="Книга не возвращена"><img src="/resources/image/cancel.png"></a></td>
                                         <td class="table-danger"> ${give.catalogBooks.name}</td>
                                         <td class="table-danger"> ${give.catalogBooks.author.authorName}</td>
                                         <td class="table-danger"> #{give.catalogBooks.invNum}</td>
                                     </tr>
                                     <#else >
                                     <tr class="table-success">
-                                        <td><a href="/readerInfo/#{readerId.idReader}?action=#{idOrd}&returnBookId=#{give.idGive}&returnBook=false" class="btn btn-outline-success btn-sm btn-table" id="order" data-toggle="tooltip" data-placement="top" title="Книга не возвращена"><img src="/resources/image/ok.png"></a></td>
+                                        <td><a href="/readerInfo/#{readerId.idReader}?action=#{idOrd}&returnBookId=#{give.idGive}&returnBook=false" class="btn btn-outline-success btn-sm btn-table" id="order" data-toggle="tooltip" data-placement="top" title="Книга возвращена"><img src="/resources/image/ok.png"></a></td>
                                         <td class="table-success"> ${give.catalogBooks.name}</td>
                                         <td class="table-success"> ${give.catalogBooks.author.authorName}</td>
                                         <td class="table-success"> #{give.catalogBooks.invNum}</td>

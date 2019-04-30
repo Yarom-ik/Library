@@ -1,5 +1,7 @@
 package by.yarom.library.Controller;
 
+import by.yarom.library.Entity.Users;
+import by.yarom.library.Service.RoleService;
 import by.yarom.library.Service.UsersService;
 import by.yarom.library.backup.Backup;
 import org.apache.log4j.Logger;
@@ -26,6 +28,9 @@ public class AdminController {
 
     @Autowired
     private UsersService usersService;
+
+    @Autowired
+    private RoleService roleService;
 
     @Value("${file.directory}")
     private String fileDirectory;
@@ -101,6 +106,15 @@ public class AdminController {
     public String admin(@RequestParam (value = "id_User") int idUser){
         usersService.deleteUser(idUser);
 
+        return "redirect:/admin";
+    }
+
+    @PostMapping(value = "/admin/edit")
+    public String userEdit(@ModelAttribute ("idRole") int idRole,
+                           @ModelAttribute ("login") String login){
+        Users user = usersService.getUserByLogin(login);
+        user.setRole(roleService.getRoleById(idRole));
+        usersService.updateUser(user);
         return "redirect:/admin";
     }
 
