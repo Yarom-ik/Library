@@ -58,6 +58,7 @@
 <div class="card">
     <h6 class="card-header">Управление пользователями</h6>
     <div class="card-body">
+        Найдено пользователей: ${count}
         <form method="get" action="/admin">
             <table class="table table-hover table-sm">
                 <thead class="thead-light">
@@ -73,15 +74,15 @@
                     <#list usersAndRole as user>
                     <tr>
                         <td>
-                            <#--<a class="btn btn-outline-info btn-sm btn-table " role="button" href="/admin/#{user.idUser}" data-toggle="tooltip" data-placement="top" title="Редактировать пользователя"><img src="/resources/image/edit.png"></a>-->
-                                <a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-target="#userEdit"
-                                   data-user="${user.login}" data-roleuser="${user.getRole().name}" >
+                        <#--<a class="btn btn-outline-info btn-sm btn-table " role="button" href="/admin/#{user.idUser}" data-toggle="tooltip" data-placement="top" title="Редактировать пользователя"><img src="/resources/image/edit.png"></a>-->
+                            <a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-target="#userEdit"
+                               data-user="${user.login}" data-roleuser="${user.getRole().name}" >
                                 <span class="tags"  data-toggle="tooltip"  data-placement="top" title="Редактировать пользователя">
                                 <img src="/resources/image/edit.png">
                                 </span>
-                                </a>
+                            </a>
 
-                                <a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-id="#{user.idUser}" data-target="#exampleModalDelete" >
+                            <a class="btn btn-outline-info btn-sm btn-table " role="button" data-toggle="modal" data-id="#{user.idUser}" data-target="#exampleModalDelete" >
                                 <span class="tags"  data-toggle="tooltip"  data-placement="top" title="Удалить пользователя">
                                 <img src="/resources/image/delete.png">
                                 </span>
@@ -96,6 +97,52 @@
                 </tbody>
             </table>
         </form>
+
+
+        <#if countFindReaders gt 1>
+            <#if countFindReaders gt 7>
+                <#assign
+                totalPages = countFindReaders
+                pageNumber = activePage
+
+                head = (pageNumber > 4)?then([1, -1], [1, 2, 3])
+                tail = (pageNumber < totalPages - 3)?then([-1, totalPages], [totalPages - 2, totalPages - 1, totalPages])
+                bodyBefore = (pageNumber > 4 && pageNumber < totalPages - 1)?then([pageNumber - 2, pageNumber - 1], [])
+                bodyAfter = (pageNumber > 2 && pageNumber < totalPages - 3)?then([pageNumber + 1, pageNumber + 2], [])
+
+                body = head + bodyBefore + (pageNumber > 3 && pageNumber < totalPages - 2)?then([pageNumber], []) + bodyAfter + tail
+                >
+            <#else>
+                <#assign body = 1..countFindReaders>
+            </#if>
+            <br>
+        <div class="d-flex justify-content-center">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Страницы</a>
+                </li>
+                <#list body as p>
+                    <#if p == activePage>
+                        <li class="page-item active"><a class="page-link" href="/admin?page=${p}">${p}</a></li>
+                    <#elseif p == -1>
+                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                    <#else>
+                        <li class="page-item"><a class="page-link" href="/admin?page=${p}">${p}</a></li>
+                    </#if>
+                </#list>
+                <#if countFindReaders gt 1 && countFindReaders != activePage>
+                <li class="page-item">
+                    <a class="page-link" href="/admin?page=${activePage+1}">Следующая</a>
+                <#else >
+                <li class="page-item disabled">
+                    <a class="page-link " href="/admin?page=${activePage+1}">Следующая</a>
+                </#if>
+            </li>
+            </ul>
+        </#if>
+    </div>
+
+
     </div>
 </div>
 
@@ -149,10 +196,9 @@
                             <label class="input-group-text" for="inputGroupSelect01">Новая роль</label>
                         </div>
                         <select class="custom-select" name="idRole"  id="inputGroupSelect01" required>
-                            <option selected>Выберите...</option>
                             <option  value="1">admin</option>
                             <option  value="2">library</option>
-                            <option  value="3">reader</option>
+                            <option selected value="3">reader</option>
                         </select>
                     </div>
 

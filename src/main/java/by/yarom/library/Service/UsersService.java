@@ -16,5 +16,7 @@ public interface UsersService {
 
      Users getUserByEmail(String email);
 
-     List<Users> listUsers();
+     List<Users> listUsers(Integer page);
+
+     Long countFindUsers();
 }

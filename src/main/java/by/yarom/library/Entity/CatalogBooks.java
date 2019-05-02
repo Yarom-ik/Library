@@ -20,7 +20,7 @@ public class CatalogBooks {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "catalogBooks")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "catalogBooks")
     Set<Give> gives;
 
     @Size(min = 1, max = 100, message = "Слишком длинное название книги")

@@ -336,7 +336,7 @@ public class LibraryController {
         CatalogBooks catalogBooks = catalogBooksService.getBookById(idBook);
         catalogBooks.setActive(false);
         catalogBooksService.updateBook(catalogBooks);
-        logger.info("book is deleted ok -" + catalogBooks);
+        logger.info("book set active false is ok -" + catalogBooks);
         return "redirect:/books";
     }
 
@@ -473,12 +473,12 @@ public class LibraryController {
             int count = catalogBooks.getCountBook();
             if (count > 0) {
                 count = count - entry.getValue();
-                if (count < 0) {
+                if ((count < 0) || (catalogBooks.isActive()==false)) {
                     model.addAttribute("error", true);
                     TransactionAspectSupport.currentTransactionStatus()
                             .setRollbackOnly();
                     listBasket(model);
-                    logger.debug("error order book count < 0");
+                    logger.debug("error order book count < 0 or active false");
                     return "/orders";
                 }
                 for (int i = 0; i < entry.getValue(); i++) {

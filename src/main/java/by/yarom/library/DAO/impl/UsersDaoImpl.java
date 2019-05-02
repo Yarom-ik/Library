@@ -64,8 +64,18 @@ public class UsersDaoImpl implements UsersDao {
     }
 
     @Override
-    public List<Users> listUsers() {
-        List<Users> usersList = currentSession().createQuery("from Users").list();
+    public List<Users> listUsers(Integer page) {
+        Integer maxResult = 10;
+        page = (page - 1) * 10;
+        List<Users> usersList = currentSession().createQuery("from Users")
+                .setFirstResult(page!=null?page:0)
+                .setMaxResults(maxResult!=null?maxResult:10)
+                .list();
         return usersList;
+    }
+
+    @Override
+    public Long countFindReader() {
+        return (Long) currentSession().createQuery("select count (*) from Users").uniqueResult();
     }
 }

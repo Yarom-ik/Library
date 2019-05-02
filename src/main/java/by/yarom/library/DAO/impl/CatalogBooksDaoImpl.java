@@ -39,7 +39,7 @@ public class CatalogBooksDaoImpl implements CatalogBooksDao {
 
     @Override
     public CatalogBooks getCatalogBooksById(int id) {
-        return (CatalogBooks) currentSession().get(CatalogBooks.class, id);
+        return currentSession().get(CatalogBooks.class, id);
     }
 
     @Override

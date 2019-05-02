@@ -48,7 +48,12 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public List<Users> listUsers() {
-        return usersDao.listUsers();
+    public List<Users> listUsers(Integer page) {
+        return usersDao.listUsers(page);
+    }
+
+    @Override
+    public Long countFindUsers() {
+        return usersDao.countFindReader();
     }
 }

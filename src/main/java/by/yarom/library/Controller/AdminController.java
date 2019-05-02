@@ -96,8 +96,19 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String admin(Model model){
-        model.addAttribute("usersAndRole", usersService.listUsers());
+    public String admin(@RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+                        Model model){
+
+
+        model.addAttribute("usersAndRole", usersService.listUsers(page));
+        Long count = usersService.countFindUsers();
+        model.addAttribute("count", count);
+        Long pageCount = Long.valueOf(0);
+        for (int itr = 0; itr < count; itr += 10) {
+            pageCount++;
+        }
+        model.addAttribute("countFindReaders", pageCount);
+        model.addAttribute("activePage", page);
 
         return "/admin";
     }
@@ -111,11 +122,12 @@ public class AdminController {
 
     @PostMapping(value = "/admin/edit")
     public String userEdit(@ModelAttribute ("idRole") int idRole,
-                           @ModelAttribute ("login") String login){
+                           @ModelAttribute ("login") String login,
+                           HttpServletRequest request){
         Users user = usersService.getUserByLogin(login);
         user.setRole(roleService.getRoleById(idRole));
         usersService.updateUser(user);
-        return "redirect:/admin";
+        return "redirect:" + request.getHeader("referer");
     }
 
 }
